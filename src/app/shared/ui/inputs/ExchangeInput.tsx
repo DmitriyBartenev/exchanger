@@ -12,7 +12,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({showDropdown, type}
     <StyledExchangeInput
       type={type !== 'text' ? type : 'text'}
       placeholder={showDropdown ? 'Search' : ''}
-      showDropdown={showDropdown}
+      $showDropdown={showDropdown}
     />
   );
 };

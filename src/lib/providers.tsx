@@ -1,8 +1,9 @@
 'use client';
 
 import {Provider} from 'react-redux';
-import {reduxStore} from '~/lib/redux';
+
+import store from './redux/store';
 
 export const Providers = (props: React.PropsWithChildren) => {
-  return <Provider store={reduxStore}>{props.children}</Provider>;
+  return <Provider store={store}>{props.children}</Provider>;
 };

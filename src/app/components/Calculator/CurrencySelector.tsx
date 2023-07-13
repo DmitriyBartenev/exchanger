@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {buttons, icons, inputs} from '~/app/shared/ui';
 import {CloseButton} from '~/app/shared/ui/buttons/CloseButton';
+import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
+import {getAvailableCurrencies} from '~/lib/redux/slices/thunks';
 
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
@@ -23,6 +25,14 @@ const CurrencySelector = () => {
     setCurrentCurrency(currency);
     setShowDropdown((prev) => !prev);
   };
+
+  const dispatch = useAppDispatch();
+
+  const currencyData = useAppSelector((state) => state.currency.currency);
+
+  useEffect(() => {
+    dispatch(getAvailableCurrencies());
+  }, []);
 
   return (
     <StyledCurrencySelector>

@@ -15,9 +15,9 @@ export const StyledCalculatorInput = styled.input`
 `;
 
 interface StyledExchangeInputProps {
-  showDropdown: boolean;
+  $showDropdown: boolean;
 }
 
 export const StyledExchangeInput = styled(StyledCalculatorInput)<StyledExchangeInputProps>`
-  border-radius: ${({showDropdown}) => (showDropdown ? '5px 5px 0 0' : '5px')};
+  border-radius: ${({$showDropdown}) => ($showDropdown ? '5px 5px 0 0' : '5px')};
 `;
