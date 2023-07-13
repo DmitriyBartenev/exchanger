@@ -31,6 +31,9 @@
     "paths": {
       "~/*": [
         "src/*"
+      ],
+      "~/ui": [
+        "src/app/shared/ui/index.ts"
       ]
     }
   },
