@@ -3,7 +3,11 @@
 import React, {useEffect, useState} from 'react';
 import {Spinner} from '~/app/shared/ui/spinners/Spinner';
 import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
-import {getAvailableCurrencies, getMinimalExchangeAmount} from '~/lib/redux/slices/thunks';
+import {
+  getAvailableCurrencies,
+  getEstimatedExchangeAmount,
+  getMinimalExchangeAmount,
+} from '~/lib/redux/slices/thunks';
 import {buttons} from '~/ui';
 
 import CryptoAdress from './CryptoAdress';
@@ -35,7 +39,14 @@ export const Calculator: React.FC = () => {
   };
 
   const swapCurrency = () => {
-    setSelectedCurrency([selectedCurrency[1], selectedCurrency[0]]);
+    setAmount((prevAmount) => ({
+      currency1: prevAmount.currency2,
+      currency2: prevAmount.currency1,
+    }));
+    setSelectedCurrency((prevSelectedCurrency) => [
+      prevSelectedCurrency[1],
+      prevSelectedCurrency[0],
+    ]);
   };
 
   const dispatch = useAppDispatch();
@@ -44,13 +55,16 @@ export const Calculator: React.FC = () => {
   const minimalExchangeAmount = useAppSelector(
     (state) => state.minimalExchangeAmount.minimalExchangeAmount,
   )?.toString();
+  const estimatedExchangeAmount = useAppSelector(
+    (state) => state.estimatedExchangeAmount.estimatedAmount,
+  );
 
   useEffect(() => {
     dispatch(getAvailableCurrencies());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    if (currencies.length > 0 && selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
+    if (selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
       dispatch(
         getMinimalExchangeAmount({
           from: selectedCurrency[0]?.ticker,
@@ -61,7 +75,7 @@ export const Calculator: React.FC = () => {
   }, [dispatch, currencies, selectedCurrency]);
 
   useEffect(() => {
-    if (currencies.length > 0 && minimalExchangeAmount) {
+    if (minimalExchangeAmount) {
       setAmount((prev) => ({
         ...prev,
         currency1: minimalExchangeAmount,
@@ -69,9 +83,26 @@ export const Calculator: React.FC = () => {
     }
   }, [currencies, minimalExchangeAmount]);
 
-  if (currenciesLoadingStatus === 'loading') {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    if (amount.currency1 !== '' && minimalExchangeAmount) {
+      dispatch(
+        getEstimatedExchangeAmount({
+          send_amount: amount.currency1,
+          from: selectedCurrency[0]?.ticker,
+          to: selectedCurrency[1]?.ticker,
+        }),
+      );
+    }
+  }, [dispatch, amount.currency1, selectedCurrency, minimalExchangeAmount]);
+
+  useEffect(() => {
+    if (amount.currency1 !== '' && minimalExchangeAmount && estimatedExchangeAmount) {
+      setAmount((prev) => ({
+        ...prev,
+        currency2: estimatedExchangeAmount.toString(),
+      }));
+    }
+  }, [amount.currency1, minimalExchangeAmount, estimatedExchangeAmount]);
 
   return (
     <StyledCalculator>
@@ -87,6 +118,7 @@ export const Calculator: React.FC = () => {
             name="currency1"
             index={0}
             currencies={currencies}
+            currenciesLoadingStatus={currenciesLoadingStatus}
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
@@ -97,6 +129,7 @@ export const Calculator: React.FC = () => {
             name="currency2"
             index={1}
             currencies={currencies}
+            currenciesLoadingStatus={currenciesLoadingStatus}
           />
         </StyledExchangeContainer>
         <CryptoAdress />

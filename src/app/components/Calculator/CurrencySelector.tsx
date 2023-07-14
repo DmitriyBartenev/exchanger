@@ -14,6 +14,7 @@ interface CurrencySelectorProps {
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
   index: number;
   currencies: AvailableCurrenciesResponse[];
+  currenciesLoadingStatus: 'loading' | 'idle' | 'failed';
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({
@@ -24,6 +25,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   handleCurrencyChange,
   index,
   currencies,
+  currenciesLoadingStatus,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
@@ -47,8 +49,10 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ticker={selectedCurrency.ticker.toUpperCase()}
           image={selectedCurrency.image}
           onClick={() => setShowDropdown((prev) => !prev)}
+          loadingStatus={currenciesLoadingStatus}
         />
       )}
+
       {showDropdown && (
         <StyledCurrencyDropdown>
           {currencies.map((curr) => (

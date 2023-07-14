@@ -7,10 +7,9 @@ const SpinnerAnimation = keyframes`
 `;
 
 const StyledSpinner = styled.div`
-  margin: 0 auto;
-  margin-bottom: 400px;
-  width: 33px;
-  height: 33px;
+  height: 20px;
+  width: 20px;
+  margin-right: 20px;
   border-radius: 50%;
   border: 5px solid ${colors.blue};
   border-top-color: ${colors.darkGray};
