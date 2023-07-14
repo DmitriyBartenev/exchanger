@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {buttons, icons, inputs} from '~/app/shared/ui';
 import {CloseButton} from '~/app/shared/ui/buttons/CloseButton';
-import {Spinner} from '~/app/shared/ui/spinners/Spinner';
-import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
-import {getAvailableCurrencies} from '~/lib/redux/slices/thunks';
+import {ICurrencyData} from '~/lib/redux/slices/types';
 
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
@@ -14,6 +12,7 @@ interface CurrencySelectorProps {
   selectedCurrency: {ticker: string; image: string};
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
   index: number;
+  currencies: ICurrencyData[];
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({
@@ -23,6 +22,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   selectedCurrency,
   handleCurrencyChange,
   index,
+  currencies,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
@@ -30,22 +30,10 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   const {ExchangeInput} = inputs;
   const {ArrowIcon} = icons;
 
-  const dispatch = useAppDispatch();
-  const currencyData = useAppSelector((state) => state.currency.currency);
-  const currencyFetchStatus = useAppSelector((state) => state.currency.status);
-
-  useEffect(() => {
-    dispatch(getAvailableCurrencies());
-  }, []);
-
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
     setShowDropdown((prev) => !prev);
   };
-
-  if (currencyFetchStatus === 'loading') {
-    return <Spinner />;
-  }
 
   return (
     <StyledCurrencySelector>
@@ -62,7 +50,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       )}
       {showDropdown && (
         <StyledCurrencyDropdown>
-          {currencyData.map((curr) => (
+          {currencies.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
               <img src={curr.image} alt={curr.ticker} width={20} height={20} />
               {curr.ticker.toUpperCase()}

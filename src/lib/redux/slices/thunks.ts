@@ -10,6 +10,6 @@ export const getMinimalExchangeAmount = createAppAsyncThunk(
   'minimalExchangeAmount/fetchData',
   async () => {
     const response = await fetchMinimalExchangeAmount();
-    return response;
+    return response.minAmount;
   },
 );

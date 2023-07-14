@@ -8,3 +8,7 @@ export interface ICurrencyData {
   isStable: boolean;
   supportsFixedRate: boolean;
 }
+
+export interface IMinExchangeAmount {
+  minAmount: number;
+}

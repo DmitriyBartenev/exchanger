@@ -1,7 +1,9 @@
 'use client';
 
-import React, {useState} from 'react';
-import {useAppSelector} from '~/lib/redux/hooks';
+import React, {useEffect, useState} from 'react';
+import {Spinner} from '~/app/shared/ui/spinners/Spinner';
+import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
+import {getAvailableCurrencies, getMinimalExchangeAmount} from '~/lib/redux/slices/thunks';
 import {buttons} from '~/ui';
 
 import CryptoAdress from './CryptoAdress';
@@ -9,15 +11,16 @@ import CurrencySelector from './CurrencySelector';
 import {StyledCalculator, StyledContainer, StyledExchangeContainer} from './styles';
 
 export const Calculator: React.FC = () => {
-  const currencies = useAppSelector((state) => state.currency.currency);
   const [amount, setAmount] = useState<{currency1: string; currency2: string}>({
     currency1: '',
     currency2: '',
   });
   const [selectedCurrency, setSelectedCurrency] = useState<{ticker: string; image: string}[]>([
-    {ticker: 'BTC', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
-    {ticker: 'ETH', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
+    {ticker: '', image: ''},
+    {ticker: '', image: ''},
   ]);
+
+  const {SwapButton} = buttons;
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount({...amount, [event.target.name]: event.target.value});
@@ -36,7 +39,35 @@ export const Calculator: React.FC = () => {
     setSelectedCurrency([selectedCurrency[1], selectedCurrency[0]]);
   };
 
-  const {SwapButton} = buttons;
+  const dispatch = useAppDispatch();
+  const currencies = useAppSelector((state) => state.currency.currency);
+  const currenciesLoadingStatus = useAppSelector((state) => state.currency.status);
+  const minimalExchangeAmount = useAppSelector(
+    (state) => state.minimalExchangeAmount.minimalExchangeAmount,
+  ).toString();
+
+  useEffect(() => {
+    dispatch(getAvailableCurrencies());
+    dispatch(getMinimalExchangeAmount());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currencies.length > 0 && minimalExchangeAmount) {
+      setSelectedCurrency([
+        {ticker: currencies[0]?.ticker.toUpperCase(), image: currencies[0]?.image},
+        {ticker: currencies[1]?.ticker.toUpperCase(), image: currencies[1]?.image},
+      ]);
+
+      setAmount((prev) => ({
+        ...prev,
+        currency1: minimalExchangeAmount,
+      }));
+    }
+  }, [currencies, minimalExchangeAmount]);
+
+  if (currenciesLoadingStatus === 'loading') {
+    return <Spinner />;
+  }
 
   return (
     <StyledCalculator>
@@ -51,6 +82,7 @@ export const Calculator: React.FC = () => {
             handleCurrencyChange={handleCurrencyChange}
             name="currency1"
             index={0}
+            currencies={currencies}
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
@@ -60,6 +92,7 @@ export const Calculator: React.FC = () => {
             handleCurrencyChange={handleCurrencyChange}
             name="currency2"
             index={1}
+            currencies={currencies}
           />
         </StyledExchangeContainer>
         <CryptoAdress />
