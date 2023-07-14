@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import React, {useState} from 'react';
 import {buttons, icons, inputs} from '~/app/shared/ui';
 import {CloseButton} from '~/app/shared/ui/buttons/CloseButton';
-import {ICurrencyData} from '~/lib/redux/slices/types';
+import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
 
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
@@ -12,7 +13,7 @@ interface CurrencySelectorProps {
   selectedCurrency: {ticker: string; image: string};
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
   index: number;
-  currencies: ICurrencyData[];
+  currencies: AvailableCurrenciesResponse[];
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({
@@ -43,7 +44,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       ) : (
         <SelectCurrencyButton
           icon={<ArrowIcon />}
-          ticker={selectedCurrency.ticker}
+          ticker={selectedCurrency.ticker.toUpperCase()}
           image={selectedCurrency.image}
           onClick={() => setShowDropdown((prev) => !prev)}
         />
@@ -52,7 +53,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         <StyledCurrencyDropdown>
           {currencies.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
-              <img src={curr.image} alt={curr.ticker} width={20} height={20} />
+              {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
               <span>{curr.name}</span>
             </li>

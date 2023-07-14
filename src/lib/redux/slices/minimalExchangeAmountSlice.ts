@@ -12,8 +12,8 @@ const initialState: MinimalExchangeAmountState = {
   status: 'idle',
 };
 
-export const minimalExchangeAmountStateSlice = createSlice({
-  name: 'minimal_exchange',
+export const minimalExchangeAmountSlice = createSlice({
+  name: 'minimalExchange',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

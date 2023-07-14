@@ -16,8 +16,8 @@ export const Calculator: React.FC = () => {
     currency2: '',
   });
   const [selectedCurrency, setSelectedCurrency] = useState<{ticker: string; image: string}[]>([
-    {ticker: '', image: ''},
-    {ticker: '', image: ''},
+    {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
+    {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
   ]);
 
   const {SwapButton} = buttons;
@@ -29,35 +29,39 @@ export const Calculator: React.FC = () => {
   const handleCurrencyChange = (ticker: string, image: string, index: number) => {
     setSelectedCurrency((prevSelectedCurrency) => {
       const newSelectedCurrencies = [...prevSelectedCurrency];
-      newSelectedCurrencies[index] = {ticker: ticker.toUpperCase(), image};
+      newSelectedCurrencies[index] = {ticker, image};
       return newSelectedCurrencies;
     });
   };
 
   const swapCurrency = () => {
-    setAmount({currency1: amount.currency2, currency2: amount.currency1});
     setSelectedCurrency([selectedCurrency[1], selectedCurrency[0]]);
   };
 
   const dispatch = useAppDispatch();
-  const currencies = useAppSelector((state) => state.currency.currency);
-  const currenciesLoadingStatus = useAppSelector((state) => state.currency.status);
+  const currencies = useAppSelector((state) => state.availableCurrencies.currency);
+  const currenciesLoadingStatus = useAppSelector((state) => state.availableCurrencies.status);
   const minimalExchangeAmount = useAppSelector(
     (state) => state.minimalExchangeAmount.minimalExchangeAmount,
-  ).toString();
+  )?.toString();
 
   useEffect(() => {
     dispatch(getAvailableCurrencies());
-    dispatch(getMinimalExchangeAmount());
   }, [dispatch]);
 
   useEffect(() => {
-    if (currencies.length > 0 && minimalExchangeAmount) {
-      setSelectedCurrency([
-        {ticker: currencies[0]?.ticker.toUpperCase(), image: currencies[0]?.image},
-        {ticker: currencies[1]?.ticker.toUpperCase(), image: currencies[1]?.image},
-      ]);
+    if (currencies.length > 0 && selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
+      dispatch(
+        getMinimalExchangeAmount({
+          from: selectedCurrency[0]?.ticker,
+          to: selectedCurrency[1]?.ticker,
+        }),
+      );
+    }
+  }, [dispatch, currencies, selectedCurrency]);
 
+  useEffect(() => {
+    if (currencies.length > 0 && minimalExchangeAmount) {
       setAmount((prev) => ({
         ...prev,
         currency1: minimalExchangeAmount,

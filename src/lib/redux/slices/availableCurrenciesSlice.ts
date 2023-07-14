@@ -1,19 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {getAvailableCurrencies} from './thunks';
-import type {ICurrencyData} from './types';
+import type {AvailableCurrenciesResponse} from './types';
 
-interface CurrencyState {
-  currency: ICurrencyData[];
+interface AvailableCurrenciesState {
+  currency: AvailableCurrenciesResponse[];
   status: 'idle' | 'loading' | 'failed';
 }
 
-const initialState: CurrencyState = {
+const initialState: AvailableCurrenciesState = {
   currency: [],
   status: 'idle',
 };
 
-export const currencySlice = createSlice({
+export const availableCurrenciesSlice = createSlice({
   name: 'currency',
   initialState,
   reducers: {},

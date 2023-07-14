@@ -1,5 +1,9 @@
 import {createAppAsyncThunk} from '../createAppAsyncThunk';
-import {fetchCurrencyData, fetchMinimalExchangeAmount} from './services';
+import {
+  fetchCurrencyData,
+  fetchEstimatedExchangeAmount,
+  fetchMinimalExchangeAmount,
+} from './services';
 
 export const getAvailableCurrencies = createAppAsyncThunk('currency/fetchData', async () => {
   const response = await fetchCurrencyData();
@@ -8,8 +12,16 @@ export const getAvailableCurrencies = createAppAsyncThunk('currency/fetchData', 
 
 export const getMinimalExchangeAmount = createAppAsyncThunk(
   'minimalExchangeAmount/fetchData',
-  async () => {
-    const response = await fetchMinimalExchangeAmount();
+  async ({from, to}: {from: string; to: string}) => {
+    const response = await fetchMinimalExchangeAmount(from, to);
     return response.minAmount;
+  },
+);
+
+export const getEstimatedExchangeAmount = createAppAsyncThunk(
+  'estimatedExchangeAmount/fetchData',
+  async ({send_amount, from, to}: {send_amount: string; from: string; to: string}) => {
+    const response = await fetchEstimatedExchangeAmount(send_amount, from, to);
+    return response;
   },
 );

@@ -1,7 +1,9 @@
-import {currencySlice} from './slices/currencySlice';
-import {minimalExchangeAmountStateSlice} from './slices/minimalExchangeAmountSlice';
+import {availableCurrenciesSlice} from './slices/AvailableCurrenciesSlice';
+import {estimatedExchangeAmountSlice} from './slices/estimatedExchangeAmountSlice';
+import {minimalExchangeAmountSlice} from './slices/minimalExchangeAmountSlice';
 
 export const reducer = {
-  currency: currencySlice.reducer,
-  minimalExchangeAmount: minimalExchangeAmountStateSlice.reducer,
+  availableCurrencies: availableCurrenciesSlice.reducer,
+  minimalExchangeAmount: minimalExchangeAmountSlice.reducer,
+  estimatedExchangeAmount: estimatedExchangeAmountSlice.reducer,
 };

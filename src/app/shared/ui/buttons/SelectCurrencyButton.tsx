@@ -18,7 +18,7 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
 }) => {
   return (
     <StyledSelectCurrencyButton onClick={onClick}>
-      <Image src={image} alt={ticker} width={20} height={20} />
+      {image && <Image src={image} alt={ticker} width={20} height={20} />}
       {ticker}
       {icon}
     </StyledSelectCurrencyButton>

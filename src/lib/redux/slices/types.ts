@@ -1,4 +1,4 @@
-export interface ICurrencyData {
+export interface AvailableCurrenciesResponse {
   ticker: string;
   name: string;
   image: string;
@@ -9,6 +9,12 @@ export interface ICurrencyData {
   supportsFixedRate: boolean;
 }
 
-export interface IMinExchangeAmount {
+export interface MinExchangeAmountResponse {
   minAmount: number;
+}
+
+export interface EstimatedExchangeAmountResponse {
+  estimatedAmount: number;
+  transactionSpeedForecast: string;
+  warningMessage: string | null;
 }
