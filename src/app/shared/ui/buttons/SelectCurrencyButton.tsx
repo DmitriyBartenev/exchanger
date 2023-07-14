@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
-import {Spinner} from '../spinners/Spinner';
 import {StyledSelectCurrencyButton} from './styles';
+
+import {Spinner} from '../spinners/Spinner';
 
 interface SelectCurrencyButtonProps {
   ticker: string;

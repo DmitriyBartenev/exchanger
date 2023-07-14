@@ -1,18 +1,20 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import {Spinner} from '~/app/shared/ui/spinners/Spinner';
+
 import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
 import {
   getAvailableCurrencies,
   getEstimatedExchangeAmount,
   getMinimalExchangeAmount,
 } from '~/lib/redux/slices/thunks';
+
 import {buttons} from '~/ui';
+
+import {StyledCalculator, StyledCalculatorForm, StyledExchangeContainer} from './styles';
 
 import CryptoAdress from './CryptoAdress';
 import CurrencySelector from './CurrencySelector';
-import {StyledCalculator, StyledContainer, StyledExchangeContainer} from './styles';
 
 export const Calculator: React.FC = () => {
   const [amount, setAmount] = useState<{currency1: string; currency2: string}>({
@@ -23,8 +25,21 @@ export const Calculator: React.FC = () => {
     {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
     {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
   ]);
+  const [exchangeError, setExchangeError] = useState<boolean>(false);
 
   const {SwapButton} = buttons;
+
+  const dispatch = useAppDispatch();
+  const currencies = useAppSelector((state) => state.availableCurrencies.currency);
+  const minimalExchangeAmount = useAppSelector(
+    (state) => state.minimalExchangeAmount.minimalExchangeAmount,
+  )?.toString();
+  const estimatedExchangeAmount = useAppSelector(
+    (state) => state.estimatedExchangeAmount.estimatedAmount,
+  );
+  const estimatedExchangeAmountError = useAppSelector(
+    (state) => state.estimatedExchangeAmount.error,
+  );
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount({...amount, [event.target.name]: event.target.value});
@@ -49,16 +64,18 @@ export const Calculator: React.FC = () => {
     ]);
   };
 
-  const dispatch = useAppDispatch();
-  const currencies = useAppSelector((state) => state.availableCurrencies.currency);
-  const currenciesLoadingStatus = useAppSelector((state) => state.availableCurrencies.status);
-  const minimalExchangeAmount = useAppSelector(
-    (state) => state.minimalExchangeAmount.minimalExchangeAmount,
-  )?.toString();
-  const estimatedExchangeAmount = useAppSelector(
-    (state) => state.estimatedExchangeAmount.estimatedAmount,
-  );
-  const estimatedError = useAppSelector((state) => state.estimatedExchangeAmount.error?.message);
+  const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (amount.currency1 < minimalExchangeAmount) {
+      setAmount((prev) => ({
+        ...prev,
+        currency2: '-',
+      }));
+      setExchangeError(true);
+    } else {
+      setExchangeError(false);
+    }
+  };
 
   useEffect(() => {
     dispatch(getAvailableCurrencies());
@@ -85,7 +102,7 @@ export const Calculator: React.FC = () => {
   }, [minimalExchangeAmount]);
 
   useEffect(() => {
-    if (amount.currency1 !== '' && minimalExchangeAmount) {
+    if (amount.currency1 && minimalExchangeAmount) {
       dispatch(
         getEstimatedExchangeAmount({
           send_amount: amount.currency1,
@@ -102,6 +119,7 @@ export const Calculator: React.FC = () => {
         ...prev,
         currency2: estimatedExchangeAmount.toString(),
       }));
+      setExchangeError(false);
     }
   }, [amount.currency1, minimalExchangeAmount, estimatedExchangeAmount]);
 
@@ -109,7 +127,7 @@ export const Calculator: React.FC = () => {
     <StyledCalculator>
       <h1>Crypto Exchange</h1>
       <p>Exchange fast and easy</p>
-      <StyledContainer>
+      <StyledCalculatorForm onSubmit={onSubmit}>
         <StyledExchangeContainer>
           <CurrencySelector
             value={amount.currency1}
@@ -119,7 +137,6 @@ export const Calculator: React.FC = () => {
             name="currency1"
             index={0}
             currencies={currencies}
-            currenciesLoadingStatus={currenciesLoadingStatus}
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
@@ -130,11 +147,11 @@ export const Calculator: React.FC = () => {
             name="currency2"
             index={1}
             currencies={currencies}
-            currenciesLoadingStatus={currenciesLoadingStatus}
+            exchangeError={exchangeError}
           />
         </StyledExchangeContainer>
-        <CryptoAdress />
-      </StyledContainer>
+        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmountError} />
+      </StyledCalculatorForm>
     </StyledCalculator>
   );
 };

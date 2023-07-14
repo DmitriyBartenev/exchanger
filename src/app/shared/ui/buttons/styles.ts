@@ -10,6 +10,19 @@ const DefaultButton = styled.button`
   cursor: pointer;
 `;
 
+export const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  span {
+    color: ${colors.red};
+    line-height: 23px;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+`;
+
 export const StyledExchangeButton = styled.button`
   padding: 15px 59px;
   background-color: ${colors.blue};
@@ -22,6 +35,11 @@ export const StyledExchangeButton = styled.button`
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: ${colors.darkBlue};
+    border-color: ${colors.darkBlue};
+  }
 `;
 
 export const StyledSelectCurrencyButton = styled.button`
@@ -44,7 +62,11 @@ export const StyledSelectCurrencyButton = styled.button`
   cursor: pointer;
 `;
 
-export const StyledSwapButton = styled(DefaultButton)``;
+export const StyledSwapButton = styled(DefaultButton)`
+  @media screen and (max-width: 768px) {
+    transform: rotate(90deg);
+  }
+`;
 
 export const StyledCloseButton = styled(StyledSelectCurrencyButton)`
   border: none;

@@ -1,5 +1,6 @@
-import {SwapIcon} from '../icons/SwapIcon';
 import {StyledSwapButton} from './styles';
+
+import {SwapIcon} from '../icons/SwapIcon';
 
 interface SwapButtonProps {
   type: 'reset' | 'submit' | 'button';

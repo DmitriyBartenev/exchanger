@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import {colors} from '~/app/styles/colors';
 
 export const StyledCalculator = styled.div`
-  width: 960px;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  padding: 0 15px;
   h1 {
     font-size: 50px;
     font-weight: 300;
@@ -22,7 +23,7 @@ export const StyledCalculator = styled.div`
   }
 `;
 
-export const StyledContainer = styled.div`
+export const StyledCalculatorForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -37,6 +38,10 @@ export const StyledExchangeContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 28px;
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 `;
 
 export const StyledAddressContainer = styled.div`
@@ -49,20 +54,33 @@ export const StyledAddressContainer = styled.div`
 `;
 
 export const StyledAdressSubmit = styled.div`
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 32px;
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 export const StyledCurrencySelector = styled.div`
   width: 100%;
   height: 50px;
+  background-color: ${colors.lightGray};
+  border-radius: 5px;
   position: relative;
+  span {
+    color: ${colors.red};
+    line-height: 23px;
+    font-size: 16px;
+    margin-top: 8px;
+  }
 `;
 
 export const StyledCurrencyDropdown = styled.ul`
   position: absolute;
+  z-index: 2;
   width: 100%;
   max-height: 142px;
   overflow: auto;

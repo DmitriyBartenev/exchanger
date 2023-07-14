@@ -1,4 +1,4 @@
-import {availableCurrenciesSlice} from './slices/AvailableCurrenciesSlice';
+import {availableCurrenciesSlice} from './slices/availableCurrenciesSlice';
 import {estimatedExchangeAmountSlice} from './slices/estimatedExchangeAmountSlice';
 import {minimalExchangeAmountSlice} from './slices/minimalExchangeAmountSlice';
 

@@ -1,5 +1,6 @@
-import {CloseIcon} from '../icons/CloseIcon';
 import {StyledCloseButton} from './styles';
+
+import {CloseIcon} from '../icons/CloseIcon';
 
 interface CloseButtonProps {
   onClick: () => void;

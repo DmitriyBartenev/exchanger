@@ -1,9 +1,6 @@
-/* Components */
 import {Providers} from '~/lib/providers';
 
 import './styles/globals.css';
-
-/* Instruments */
 import styles from './styles/layout.module.css';
 
 export default function RootLayout(props: React.PropsWithChildren) {
