@@ -58,6 +58,7 @@ export const Calculator: React.FC = () => {
   const estimatedExchangeAmount = useAppSelector(
     (state) => state.estimatedExchangeAmount.estimatedAmount,
   );
+  const estimatedError = useAppSelector((state) => state.estimatedExchangeAmount.error?.message);
 
   useEffect(() => {
     dispatch(getAvailableCurrencies());
@@ -72,7 +73,7 @@ export const Calculator: React.FC = () => {
         }),
       );
     }
-  }, [dispatch, currencies, selectedCurrency]);
+  }, [dispatch, selectedCurrency]);
 
   useEffect(() => {
     if (minimalExchangeAmount) {
@@ -81,7 +82,7 @@ export const Calculator: React.FC = () => {
         currency1: minimalExchangeAmount,
       }));
     }
-  }, [currencies, minimalExchangeAmount]);
+  }, [minimalExchangeAmount]);
 
   useEffect(() => {
     if (amount.currency1 !== '' && minimalExchangeAmount) {
