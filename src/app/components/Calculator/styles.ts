@@ -64,6 +64,8 @@ export const StyledCurrencySelector = styled.div`
 export const StyledCurrencyDropdown = styled.ul`
   position: absolute;
   width: 100%;
+  max-height: 142px;
+  overflow: auto;
   list-style: none;
   left: 0;
   top: 100;
@@ -74,11 +76,20 @@ export const StyledCurrencyDropdown = styled.ul`
   border-top: none;
   border-radius: 0 0px 5px 5px;
   li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 13px;
     font-size: 16px;
     font-weight: 400;
     line-height: 23px;
     padding: 13px 0 13px 16px;
     cursor: pointer;
+    span {
+      font-size: 16px;
+      line-height: 23px;
+      color: ${colors.paleBlue};
+    }
     &:hover {
       background-color: ${colors.lightBlue};
     }

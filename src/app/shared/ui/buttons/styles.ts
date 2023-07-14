@@ -32,6 +32,7 @@ export const StyledSelectCurrencyButton = styled.button`
   padding: 0 8px 0 34px;
   border: none;
   border-left: solid 1px ${colors.darkGray};
+  color: ${colors.black};
   display: flex;
   justify-content: space-between;
   align-items: center;
