@@ -5,5 +5,5 @@ export default function IndexPage() {
 }
 
 export const metadata = {
-  title: 'Crypto Exchange',
+  title: 'Crypto Exchanger',
 };
