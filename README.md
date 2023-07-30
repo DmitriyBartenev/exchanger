@@ -1,6 +1,6 @@
-## Crypto Exchanger
+# Crypto Exchanger
 
-# Technologies used
+## Technologies used
 
 - ReactJS
 - NextJS
