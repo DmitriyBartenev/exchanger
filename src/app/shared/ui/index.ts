@@ -1,25 +1,10 @@
-import {CloseButton} from './buttons/CloseButton';
-import {ExchangeButton} from './buttons/ExchangeButton';
-import {SelectCurrencyButton} from './buttons/SelectCurrencyButton';
-import {SwapButton} from './buttons/SwapButton';
-import {ArrowIcon} from './icons/ArrowIcon';
-import {CloseIcon} from './icons/CloseIcon';
-import {CalculatorInput} from './inputs/CalculatorInput';
-import {ExchangeInput} from './inputs/ExchangeInput';
+export {CloseButton} from './buttons/CloseButton';
+export {ExchangeButton} from './buttons/ExchangeButton';
+export {SelectCurrencyButton} from './buttons/SelectCurrencyButton';
+export {SwapButton} from './buttons/SwapButton';
 
-export const inputs = {
-  ExchangeInput,
-  CalculatorInput,
-};
+export {ArrowIcon} from './icons/ArrowIcon';
+export {CloseIcon} from './icons/CloseIcon';
 
-export const buttons = {
-  ExchangeButton,
-  SwapButton,
-  CloseButton,
-  SelectCurrencyButton,
-};
-
-export const icons = {
-  CloseIcon,
-  ArrowIcon,
-};
+export {CalculatorInput} from './inputs/CalculatorInput';
+export {ExchangeInput} from './inputs/ExchangeInput';
