@@ -1,4 +1,8 @@
-import type {ReduxState} from '../store';
+import {RootState} from '../store';
 
-export const availableCurrencies = (state: ReduxState) => state.availableCurrencies.currency;
-export const availableCurrenciesStatus = (state: ReduxState) => state.availableCurrencies.status;
+export const rootSelector = (state: RootState) => ({
+  availableCurrencies: state.availableCurrencies.currency,
+  availableCurrenciesFetchStatus: state.availableCurrencies.status,
+  minimalExchangeAmount: state.minimalExchangeAmount.minimalExchangeAmount.toString(),
+  estimatedExchangeAmount: state.estimatedExchangeAmount,
+});
