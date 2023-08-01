@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {useAppSelector} from '~/lib/redux/hooks';
 import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
 
-import {buttons, icons, inputs} from '~/app/shared/ui';
+import {ArrowIcon, CloseButton, ExchangeInput, SelectCurrencyButton} from '~/app/shared/ui';
 
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
@@ -30,10 +30,6 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   exchangeError,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-
-  const {SelectCurrencyButton, CloseButton} = buttons;
-  const {ExchangeInput} = inputs;
-  const {ArrowIcon} = icons;
 
   const availableCurrenciesStatus = useAppSelector((state) => state.availableCurrencies.status);
 

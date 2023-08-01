@@ -9,7 +9,7 @@ import {
   getMinimalExchangeAmount,
 } from '~/lib/redux/slices/thunks';
 
-import {buttons} from '~/ui';
+import {SwapButton} from '~/ui';
 
 import {StyledCalculator, StyledCalculatorForm, StyledExchangeContainer} from './styles';
 
@@ -26,8 +26,6 @@ export const Calculator: React.FC = () => {
     {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
   ]);
   const [exchangeError, setExchangeError] = useState<boolean>(false);
-
-  const {SwapButton} = buttons;
 
   const dispatch = useAppDispatch();
   const currencies = useAppSelector((state) => state.availableCurrencies.currency);
