@@ -3,7 +3,7 @@ import React from 'react';
 
 import {StyledSelectCurrencyButton} from './styles';
 
-import {Spinner} from '../spinners/Spinner';
+import {FetchCurrenciesSpinner} from '../spinners/FetchCurrenciesSpinner';
 
 interface SelectCurrencyButtonProps {
   ticker: string;
@@ -23,7 +23,7 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   return (
     <StyledSelectCurrencyButton onClick={onClick}>
       {loadingStatus === 'loading' ? (
-        <Spinner />
+        <FetchCurrenciesSpinner />
       ) : (
         <>
           {image && <Image src={image} alt={ticker} width={20} height={20} />}

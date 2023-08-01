@@ -7,6 +7,7 @@ import {
 const api_key = 'c9155859d90d239f909d2906233816b26cd8cf5ede44702d422667672b58b0cd';
 
 export const fetchCurrencyData = async (): Promise<AvailableCurrenciesResponse[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch('https://api.changenow.io/v1/currencies?active=true');
   const data = await response.json();
   return data;

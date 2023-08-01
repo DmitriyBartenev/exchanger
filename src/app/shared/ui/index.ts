@@ -8,3 +8,5 @@ export {CloseIcon} from './icons/CloseIcon';
 
 export {CalculatorInput} from './inputs/CalculatorInput';
 export {ExchangeInput} from './inputs/ExchangeInput';
+
+export {FetchCurrenciesSpinner} from './spinners/FetchCurrenciesSpinner';
