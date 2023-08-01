@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, {useState} from 'react';
 
 import {useAppSelector} from '~/lib/redux/hooks';
+import {rootSelector} from '~/lib/redux/slices/selectors';
 import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
 
 import {ArrowIcon, CloseButton, ExchangeInput, SelectCurrencyButton} from '~/app/shared/ui';
@@ -31,7 +32,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  const availableCurrenciesStatus = useAppSelector((state) => state.availableCurrencies.status);
+  const {availableCurrenciesFetchStatus} = useAppSelector(rootSelector);
 
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
@@ -50,7 +51,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ticker={selectedCurrency.ticker.toUpperCase()}
           image={selectedCurrency.image}
           onClick={() => setShowDropdown((prev) => !prev)}
-          loadingStatus={availableCurrenciesStatus}
+          loadingStatus={availableCurrenciesFetchStatus}
         />
       )}
 

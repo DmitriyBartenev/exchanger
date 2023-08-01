@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
+import {rootSelector} from '~/lib/redux/slices/selectors';
 import {
   getAvailableCurrencies,
   getEstimatedExchangeAmount,
@@ -28,16 +29,9 @@ export const Calculator: React.FC = () => {
   const [exchangeError, setExchangeError] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const currencies = useAppSelector((state) => state.availableCurrencies.currency);
-  const minimalExchangeAmount = useAppSelector(
-    (state) => state.minimalExchangeAmount.minimalExchangeAmount,
-  )?.toString();
-  const estimatedExchangeAmount = useAppSelector(
-    (state) => state.estimatedExchangeAmount.estimatedAmount,
-  );
-  const estimatedExchangeAmountError = useAppSelector(
-    (state) => state.estimatedExchangeAmount.error,
-  );
+
+  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
+    useAppSelector(rootSelector);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount({...amount, [event.target.name]: event.target.value});
@@ -134,7 +128,7 @@ export const Calculator: React.FC = () => {
             handleCurrencyChange={handleCurrencyChange}
             name="currency1"
             index={0}
-            currencies={currencies}
+            currencies={availableCurrencies}
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
@@ -144,11 +138,11 @@ export const Calculator: React.FC = () => {
             handleCurrencyChange={handleCurrencyChange}
             name="currency2"
             index={1}
-            currencies={currencies}
+            currencies={availableCurrencies}
             exchangeError={exchangeError}
           />
         </StyledExchangeContainer>
-        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmountError} />
+        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmount.error} />
       </StyledCalculatorForm>
     </StyledCalculator>
   );
