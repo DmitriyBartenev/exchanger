@@ -30,8 +30,12 @@ export const Calculator: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
-    useAppSelector(rootSelector);
+  const {
+    availableCurrencies,
+    estimatedExchangeAmount,
+    minimalExchangeAmount,
+    estimatedExchangeAmountError,
+  } = useAppSelector(rootSelector);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount({...amount, [event.target.name]: event.target.value});
@@ -58,7 +62,7 @@ export const Calculator: React.FC = () => {
 
   const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (amount.currency1 < minimalExchangeAmount) {
+    if (Number(amount.currency1) < Number(minimalExchangeAmount)) {
       setAmount((prev) => ({
         ...prev,
         currency2: '-',
@@ -109,7 +113,7 @@ export const Calculator: React.FC = () => {
     if (amount.currency1 !== '' && minimalExchangeAmount && estimatedExchangeAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency2: estimatedExchangeAmount.toString(),
+        currency2: estimatedExchangeAmount,
       }));
       setExchangeError(false);
     }
@@ -142,7 +146,7 @@ export const Calculator: React.FC = () => {
             exchangeError={exchangeError}
           />
         </StyledExchangeContainer>
-        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmount.error} />
+        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmountError} />
       </StyledCalculatorForm>
     </StyledCalculator>
   );
