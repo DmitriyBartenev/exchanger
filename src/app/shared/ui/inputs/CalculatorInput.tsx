@@ -8,5 +8,11 @@ interface CalculatorInputProps {
 }
 
 export const CalculatorInput: React.FC<CalculatorInputProps> = ({placeholder, type}) => {
-  return <StyledCalculatorInput type={type !== 'text' ? type : 'text'} placeholder={placeholder} />;
+  return (
+    <StyledCalculatorInput
+      type={type !== 'text' ? type : 'text'}
+      placeholder={placeholder}
+      required
+    />
+  );
 };
