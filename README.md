@@ -7,3 +7,4 @@
 - Redux
 - Redux-Toolkit
 - Styled Components
+- Reselect
