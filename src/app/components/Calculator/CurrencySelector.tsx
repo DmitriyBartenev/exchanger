@@ -10,7 +10,7 @@ import {ArrowIcon, CloseButton, ExchangeInput, SelectCurrencyButton} from '~/app
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
 interface CurrencySelectorProps {
-  value: string;
+  value: string | undefined;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   selectedCurrency: {ticker: string; image: string};
@@ -41,7 +41,12 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 
   return (
     <StyledCurrencySelector>
-      <ExchangeInput showDropdown={showDropdown} value={value} onChange={onChange} name={name} />
+      <ExchangeInput
+        showDropdown={showDropdown}
+        value={value ?? ''}
+        onChange={onChange}
+        name={name}
+      />
 
       {showDropdown ? (
         <CloseButton onClick={() => setShowDropdown((prev) => !prev)} />

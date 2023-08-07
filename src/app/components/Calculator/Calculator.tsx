@@ -18,7 +18,10 @@ import CryptoAdress from './CryptoAdress';
 import CurrencySelector from './CurrencySelector';
 
 export const Calculator: React.FC = () => {
-  const [amount, setAmount] = useState<{currency1: string; currency2: string}>({
+  const [amount, setAmount] = useState<{
+    currency1: string | undefined;
+    currency2: string | undefined;
+  }>({
     currency1: '',
     currency2: '',
   });
@@ -30,12 +33,8 @@ export const Calculator: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const {
-    availableCurrencies,
-    estimatedExchangeAmount,
-    minimalExchangeAmount,
-    estimatedExchangeAmountError,
-  } = useAppSelector(rootSelector);
+  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
+    useAppSelector(rootSelector);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount({...amount, [event.target.name]: event.target.value});
@@ -113,7 +112,7 @@ export const Calculator: React.FC = () => {
     if (amount.currency1 !== '' && minimalExchangeAmount && estimatedExchangeAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency2: estimatedExchangeAmount,
+        currency2: estimatedExchangeAmount.estimatedAmount?.toString(),
       }));
       setExchangeError(false);
     }
@@ -126,7 +125,7 @@ export const Calculator: React.FC = () => {
       <StyledCalculatorForm onSubmit={onSubmit}>
         <StyledExchangeContainer>
           <CurrencySelector
-            value={amount.currency1}
+            value={amount?.currency1}
             selectedCurrency={selectedCurrency[0]}
             onChange={handleAmountChange}
             handleCurrencyChange={handleCurrencyChange}
@@ -136,7 +135,7 @@ export const Calculator: React.FC = () => {
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
-            value={amount.currency2}
+            value={amount?.currency2}
             selectedCurrency={selectedCurrency[1]}
             onChange={handleAmountChange}
             handleCurrencyChange={handleCurrencyChange}
@@ -146,7 +145,7 @@ export const Calculator: React.FC = () => {
             exchangeError={exchangeError}
           />
         </StyledExchangeContainer>
-        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmountError} />
+        <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmount.error} />
       </StyledCalculatorForm>
     </StyledCalculator>
   );
