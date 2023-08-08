@@ -1,11 +1,15 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 
-import {useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
-import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
+import {AvailableCurrenciesState} from '~/lib/redux/slices/availableCurrenciesSlice';
 
-import {ArrowIcon, CloseButton, ExchangeInput, SelectCurrencyButton} from '~/app/shared/ui';
+import {
+  ArrowIcon,
+  CloseButton,
+  ExchangeAmountSpinner,
+  ExchangeInput,
+  SelectCurrencyButton,
+} from '~/app/shared/ui';
 
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
@@ -16,8 +20,9 @@ interface CurrencySelectorProps {
   selectedCurrency: {ticker: string; image: string};
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
   index: number;
-  currencies: AvailableCurrenciesResponse[];
+  currencies: AvailableCurrenciesState;
   exchangeError?: boolean;
+  isLoading: 'idle' | 'loading' | 'failed';
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({
@@ -29,10 +34,9 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   index,
   currencies,
   exchangeError,
+  isLoading,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-
-  const {availableCurrenciesFetchStatus} = useAppSelector(rootSelector);
 
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
@@ -41,12 +45,16 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 
   return (
     <StyledCurrencySelector>
-      <ExchangeInput
-        showDropdown={showDropdown}
-        value={value ?? ''}
-        onChange={onChange}
-        name={name}
-      />
+      {isLoading === 'loading' ? (
+        <ExchangeAmountSpinner />
+      ) : (
+        <ExchangeInput
+          showDropdown={showDropdown}
+          value={value ?? ''}
+          onChange={onChange}
+          name={name}
+        />
+      )}
 
       {showDropdown ? (
         <CloseButton onClick={() => setShowDropdown((prev) => !prev)} />
@@ -56,13 +64,13 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ticker={selectedCurrency.ticker.toUpperCase()}
           image={selectedCurrency.image}
           onClick={() => setShowDropdown((prev) => !prev)}
-          loadingStatus={availableCurrenciesFetchStatus}
+          availableCurrenciesFetchStatus={currencies.status}
         />
       )}
 
       {showDropdown && (
         <StyledCurrencyDropdown>
-          {currencies.map((curr) => (
+          {currencies.currency.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
               {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
