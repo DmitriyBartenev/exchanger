@@ -17,6 +17,7 @@ export const fetchMinimalExchangeAmount = async (
   from: string,
   to: string,
 ): Promise<MinExchangeAmountResponse> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch(
     `https://api.changenow.io/v1/min-amount/${from}_${to}?api_key=${api_key}`,
   );
@@ -29,6 +30,7 @@ export const fetchEstimatedExchangeAmount = async (
   from: string,
   to: string,
 ): Promise<EstimatedExchangeAmountResponse> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch(
     `https://api.changenow.io/v1/exchange-amount/${send_amount}/${from}_${to}/?api_key=${api_key}`,
   );

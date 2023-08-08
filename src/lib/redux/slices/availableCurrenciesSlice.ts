@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {getAvailableCurrencies} from './thunks';
 import type {AvailableCurrenciesResponse} from './types';
 
-interface AvailableCurrenciesState {
+export interface AvailableCurrenciesState {
   currency: AvailableCurrenciesResponse[];
   status: 'idle' | 'loading' | 'failed';
 }

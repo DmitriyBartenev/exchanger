@@ -3,12 +3,12 @@ import {createSlice} from '@reduxjs/toolkit';
 import {getMinimalExchangeAmount} from './thunks';
 
 interface MinimalExchangeAmountState {
-  minimalExchangeAmount: number;
+  minimalExchangeAmount: number | null;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: MinimalExchangeAmountState = {
-  minimalExchangeAmount: 0,
+  minimalExchangeAmount: null,
   status: 'idle',
 };
 
