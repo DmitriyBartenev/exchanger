@@ -10,3 +10,4 @@ export {CalculatorInput} from './inputs/CalculatorInput';
 export {ExchangeInput} from './inputs/ExchangeInput';
 
 export {FetchCurrenciesSpinner} from './spinners/FetchCurrenciesSpinner';
+export {ExchangeAmountSpinner} from './spinners/ExchangeAmountSpinner';
