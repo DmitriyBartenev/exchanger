@@ -91,7 +91,7 @@ export const Calculator: React.FC = () => {
     if (minimalExchangeAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency1: minimalExchangeAmount,
+        currency1: minimalExchangeAmount.minimalExchangeAmount?.toString(),
       }));
     }
   }, [minimalExchangeAmount]);
@@ -132,6 +132,7 @@ export const Calculator: React.FC = () => {
             name="currency1"
             index={0}
             currencies={availableCurrencies}
+            isLoading={minimalExchangeAmount.status}
           />
           <SwapButton type="button" onClick={swapCurrency} />
           <CurrencySelector
@@ -143,6 +144,7 @@ export const Calculator: React.FC = () => {
             index={1}
             currencies={availableCurrencies}
             exchangeError={exchangeError}
+            isLoading={estimatedExchangeAmount.status}
           />
         </StyledExchangeContainer>
         <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmount.error} />
