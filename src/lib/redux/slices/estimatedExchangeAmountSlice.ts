@@ -2,6 +2,11 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {getEstimatedExchangeAmount} from './thunks';
 
+export interface EstimatedExchangeAmountError {
+  error: string;
+  message: string;
+}
+
 interface EstimatedExchangeAmountState {
   estimatedAmount: number | null;
   transactionSpeedForecast: string | null;
@@ -14,8 +19,8 @@ const initialState: EstimatedExchangeAmountState = {
   estimatedAmount: null,
   transactionSpeedForecast: null,
   warningMessage: null,
-  status: 'idle',
   error: null,
+  status: 'idle',
 };
 
 export const estimatedExchangeAmountSlice = createSlice({
@@ -31,10 +36,10 @@ export const estimatedExchangeAmountSlice = createSlice({
       })
       .addCase(getEstimatedExchangeAmount.fulfilled, (state, action) => {
         state.status = 'idle';
+        state.error = null;
         state.estimatedAmount = action.payload.estimatedAmount;
         state.transactionSpeedForecast = action.payload.transactionSpeedForecast;
         state.warningMessage = action.payload.warningMessage;
-        state.error = null;
       })
       .addCase(getEstimatedExchangeAmount.rejected, (state, action) => {
         state.status = 'failed';
