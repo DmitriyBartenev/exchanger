@@ -58,10 +58,9 @@ export const Calculator: React.FC = () => {
       prevSelectedCurrency[0],
     ]);
   };
-
   const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (Number(amount.currency1) < Number(minimalExchangeAmount)) {
+    if (Number(amount.currency1) < Number(minimalExchangeAmount.minimalExchangeAmount)) {
       setAmount((prev) => ({
         ...prev,
         currency2: '-',
@@ -143,8 +142,8 @@ export const Calculator: React.FC = () => {
             name="currency2"
             index={1}
             currencies={availableCurrencies}
-            exchangeError={exchangeError}
             isLoading={estimatedExchangeAmount.status}
+            exchangeError={exchangeError}
           />
         </StyledExchangeContainer>
         <CryptoAdress estimatedExchangeAmountError={estimatedExchangeAmount.error} />
