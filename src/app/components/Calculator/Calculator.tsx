@@ -37,7 +37,11 @@ export const Calculator: React.FC = () => {
     useAppSelector(rootSelector);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount({...amount, [event.target.name]: event.target.value});
+    const {name, value} = event.target;
+    setAmount((prevAmount) => ({
+      ...prevAmount,
+      [name]: value,
+    }));
   };
 
   const handleCurrencyChange = (ticker: string, image: string, index: number) => {
@@ -58,6 +62,7 @@ export const Calculator: React.FC = () => {
       prevSelectedCurrency[0],
     ]);
   };
+
   const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (Number(amount.currency1) < Number(minimalExchangeAmount.minimalExchangeAmount)) {
