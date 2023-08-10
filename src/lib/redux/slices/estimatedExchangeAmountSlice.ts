@@ -2,11 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {getEstimatedExchangeAmount} from './thunks';
 
-export interface EstimatedExchangeAmountError {
-  error: string;
-  message: string;
-}
-
 interface EstimatedExchangeAmountState {
   estimatedAmount: number | null;
   transactionSpeedForecast: string | null;
