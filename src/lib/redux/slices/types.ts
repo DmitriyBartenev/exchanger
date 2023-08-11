@@ -1,3 +1,5 @@
+// List of available currencies
+
 export interface AvailableCurrenciesResponse {
   ticker: string;
   name: string;
@@ -9,12 +11,40 @@ export interface AvailableCurrenciesResponse {
   supportsFixedRate: boolean;
 }
 
-export interface MinExchangeAmountResponse {
+export interface AvailableCurrenciesError {
+  error: string;
+}
+
+// Minimal exchange amount
+
+export interface MinimalExchangeAmountResponse {
   minAmount: number;
 }
+
+export interface MinimalExchangeAmountQueryParams {
+  from: string;
+  to: string;
+}
+
+export interface MinimalExchangeAmountError {
+  error: string;
+}
+
+// Estimated exchange amount
 
 export interface EstimatedExchangeAmountResponse {
   estimatedAmount: number;
   transactionSpeedForecast: string;
   warningMessage: string | null;
+}
+
+export interface EstimatedExchangeAmountQueryParams {
+  send_amount: string;
+  from: string;
+  to: string;
+}
+
+export interface EstimatedExchangeAmountError {
+  error: string;
+  message: string;
 }
