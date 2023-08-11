@@ -1,33 +1,38 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {getAvailableCurrencies} from './thunks';
-import type {AvailableCurrenciesResponse} from './types';
+import type {AvailableCurrenciesError, AvailableCurrenciesResponse} from './types';
 
 export interface AvailableCurrenciesState {
-  currency: AvailableCurrenciesResponse[];
+  availableCurrencies: AvailableCurrenciesResponse[];
+  error?: AvailableCurrenciesError | null;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: AvailableCurrenciesState = {
-  currency: [],
+  availableCurrencies: [],
+  error: null,
   status: 'idle',
 };
 
 export const availableCurrenciesSlice = createSlice({
-  name: 'currency',
+  name: 'availableCurrencies',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAvailableCurrencies.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(getAvailableCurrencies.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.currency = action.payload;
+        state.error = null;
+        state.availableCurrencies = action.payload;
       })
-      .addCase(getAvailableCurrencies.rejected, (state) => {
+      .addCase(getAvailableCurrencies.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });
