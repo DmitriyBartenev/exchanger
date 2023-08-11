@@ -1,30 +1,90 @@
-import * as exchangerAPI from './services';
 import {createAppAsyncThunk} from '../createAppAsyncThunk';
-import {EstimatedExchangeAmountResponse} from './types';
+import type {
+  AvailableCurrenciesError,
+  AvailableCurrenciesResponse,
+  EstimatedExchangeAmountError,
+  EstimatedExchangeAmountQueryParams,
+  EstimatedExchangeAmountResponse,
+  MinimalExchangeAmountError,
+  MinimalExchangeAmountQueryParams,
+  MinimalExchangeAmountResponse,
+} from './types';
 
-export const getAvailableCurrencies = createAppAsyncThunk('currency/fetchData', async () => {
-  const response = await exchangerAPI.fetchCurrencyData();
-  return response;
+const api_key = 'c9155859d90d239f909d2906233816b26cd8cf5ede44702d422667672b58b0cd';
+
+export const getAvailableCurrencies = createAppAsyncThunk<
+  AvailableCurrenciesResponse[],
+  void,
+  {rejectValue: AvailableCurrenciesError}
+>('availableCurrencies/fetchData', async (_, {rejectWithValue}) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const response = await fetch('https://api.changenow.io/v1/currencies?active=true');
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData: AvailableCurrenciesError = await response.json();
+      return rejectWithValue(errorData);
+    }
+  } catch (error) {
+    return rejectWithValue({
+      error: 'unknown_error',
+    });
+  }
 });
 
-export const getMinimalExchangeAmount = createAppAsyncThunk(
-  'minimalExchangeAmount/fetchData',
-  async ({from, to}: {from: string; to: string}) => {
-    const response = await exchangerAPI.fetchMinimalExchangeAmount(from, to);
-    return response.minAmount;
-  },
-);
+export const getMinimalExchangeAmount = createAppAsyncThunk<
+  MinimalExchangeAmountResponse,
+  MinimalExchangeAmountQueryParams,
+  {rejectValue: MinimalExchangeAmountError}
+>('minimalExchangeAmount/fetchData', async ({from, to}, {rejectWithValue}) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-interface EstimatedExchangeAmountQueryParams {
-  send_amount: string;
-  from: string;
-  to: string;
-}
+    const response = await fetch(
+      `https://api.changenow.io/v1/min-amount/${from}_${to}?api_key=${api_key}`,
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData: MinimalExchangeAmountError = await response.json();
+      return rejectWithValue(errorData);
+    }
+  } catch (error) {
+    return rejectWithValue({
+      error: 'unknown_error',
+    });
+  }
+});
 
 export const getEstimatedExchangeAmount = createAppAsyncThunk<
   EstimatedExchangeAmountResponse,
-  EstimatedExchangeAmountQueryParams
->('estimatedExchangeAmount/fetchData', async ({send_amount, from, to}) => {
-  const response = await exchangerAPI.fetchEstimatedExchangeAmount(send_amount, from, to);
-  return response;
+  EstimatedExchangeAmountQueryParams,
+  {rejectValue: EstimatedExchangeAmountError}
+>('estimatedExchangeAmount/fetchData', async ({send_amount, from, to}, {rejectWithValue}) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const response = await fetch(
+      `https://api.changenow.io/v1/exchange-amount/${send_amount}/${from}_${to}/?api_key=${api_key}`,
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData: EstimatedExchangeAmountError = await response.json();
+      return rejectWithValue(errorData);
+    }
+  } catch (error) {
+    return rejectWithValue({
+      error: 'unknown_error',
+      message: 'An unknown error occurred',
+    });
+  }
 });
