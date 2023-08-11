@@ -1,32 +1,38 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {getMinimalExchangeAmount} from './thunks';
+import type {MinimalExchangeAmountError} from './types';
 
 interface MinimalExchangeAmountState {
-  minimalExchangeAmount: number | null;
+  minAmount: number | null;
+  error?: MinimalExchangeAmountError | null;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: MinimalExchangeAmountState = {
-  minimalExchangeAmount: null,
+  minAmount: null,
+  error: null,
   status: 'idle',
 };
 
 export const minimalExchangeAmountSlice = createSlice({
-  name: 'minimalExchange',
+  name: 'minimalExchangeAmount',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getMinimalExchangeAmount.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(getMinimalExchangeAmount.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.minimalExchangeAmount = action.payload;
+        state.error = null;
+        state.minAmount = action.payload.minAmount;
       })
-      .addCase(getMinimalExchangeAmount.rejected, (state) => {
+      .addCase(getMinimalExchangeAmount.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });
