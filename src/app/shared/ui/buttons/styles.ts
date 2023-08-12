@@ -15,12 +15,6 @@ export const StyledButtonContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  span {
-    color: ${colors.red};
-    line-height: 23px;
-    font-size: 16px;
-    margin-top: 8px;
-  }
 `;
 
 export const StyledExchangeButton = styled.button`
