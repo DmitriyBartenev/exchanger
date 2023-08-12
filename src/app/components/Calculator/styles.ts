@@ -71,6 +71,9 @@ export const StyledCurrencySelector = styled.div`
   border-radius: 5px;
   position: relative;
   span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: ${colors.red};
     line-height: 23px;
     font-size: 16px;
