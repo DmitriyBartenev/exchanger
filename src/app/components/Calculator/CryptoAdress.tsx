@@ -4,17 +4,13 @@ import {CalculatorInput, ExchangeButton} from '~/app/shared/ui';
 
 import {StyledAddressContainer, StyledAdressSubmit} from './styles';
 
-interface CryptoAdressProps {
-  estimatedExchangeAmountError: string | null;
-}
-
-const CryptoAdress: React.FC<CryptoAdressProps> = ({estimatedExchangeAmountError}) => {
+const CryptoAdress: React.FC = () => {
   return (
     <StyledAddressContainer>
       <p>Your Ethereum address</p>
       <StyledAdressSubmit>
         <CalculatorInput />
-        <ExchangeButton title="Exchange" type="submit" error={estimatedExchangeAmountError} />
+        <ExchangeButton title="Exchange" type="submit" />
       </StyledAdressSubmit>
     </StyledAddressContainer>
   );
