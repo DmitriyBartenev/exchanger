@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, {useState} from 'react';
 
 import {AvailableCurrenciesState} from '~/lib/redux/slices/availableCurrenciesSlice';
+import {EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
 
 import {
   ArrowIcon,
@@ -14,27 +15,29 @@ import {
 import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
 
 interface CurrencySelectorProps {
-  value: string | undefined;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
-  selectedCurrency: {ticker: string; image: string};
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
-  index: number;
-  currencies: AvailableCurrenciesState;
-  exchangeError?: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  exchangeError?: EstimatedExchangeAmountError | null;
+  selectedCurrency: {ticker: string; image: string};
   isLoading: 'idle' | 'loading' | 'failed';
+  currencies: AvailableCurrenciesState;
+  value: string | undefined;
+  disabled?: boolean;
+  index: number;
+  name: string;
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({
-  onChange,
-  value,
-  name,
-  selectedCurrency,
   handleCurrencyChange,
-  index,
-  currencies,
+  onChange,
   exchangeError,
+  selectedCurrency,
   isLoading,
+  currencies,
+  value,
+  disabled,
+  index,
+  name,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
@@ -53,9 +56,9 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           value={value ?? ''}
           onChange={onChange}
           name={name}
+          disabled={disabled}
         />
       )}
-
       {showDropdown ? (
         <CloseButton onClick={() => setShowDropdown((prev) => !prev)} />
       ) : (
@@ -67,10 +70,9 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           availableCurrenciesFetchStatus={currencies.status}
         />
       )}
-
       {showDropdown && (
         <StyledCurrencyDropdown>
-          {currencies.currency.map((curr) => (
+          {currencies.availableCurrencies.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
               {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
@@ -79,7 +81,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ))}
         </StyledCurrencyDropdown>
       )}
-      {exchangeError && <span>You cannot exchange less than minimum in the left field</span>}
+      {exchangeError && <span>{exchangeError.message}</span>}
     </StyledCurrencySelector>
   );
 };
