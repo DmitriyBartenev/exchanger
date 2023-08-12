@@ -8,6 +8,7 @@ interface ExchangeInputProps {
   showDropdown: boolean;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 export const ExchangeInput: React.FC<ExchangeInputProps> = ({
@@ -16,6 +17,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   value,
   name,
   onChange,
+  disabled,
 }) => {
   return (
     <StyledExchangeInput
@@ -25,6 +27,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
       value={value}
       name={name}
       onChange={onChange}
+      disabled={disabled}
     />
   );
 };
