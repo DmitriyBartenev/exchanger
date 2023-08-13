@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 
-import {AvailableCurrenciesState} from '~/lib/redux/slices/availableCurrenciesSlice';
+import {useAppSelector} from '~/lib/redux/hooks';
+import {rootSelector} from '~/lib/redux/slices/selectors';
 import {EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
 
 import {
@@ -20,7 +21,6 @@ interface CurrencySelectorProps {
   exchangeError?: EstimatedExchangeAmountError | null;
   selectedCurrency: {ticker: string; image: string};
   isLoading: 'idle' | 'loading' | 'failed';
-  currencies: AvailableCurrenciesState;
   value: string | undefined;
   disabled?: boolean;
   index: number;
@@ -33,13 +33,14 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   exchangeError,
   selectedCurrency,
   isLoading,
-  currencies,
   value,
   disabled,
   index,
   name,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+
+  const {availableCurrencies} = useAppSelector(rootSelector);
 
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
@@ -67,12 +68,12 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ticker={selectedCurrency.ticker.toUpperCase()}
           image={selectedCurrency.image}
           onClick={() => setShowDropdown((prev) => !prev)}
-          availableCurrenciesFetchStatus={currencies.status}
+          availableCurrenciesFetchStatus={availableCurrencies.status}
         />
       )}
       {showDropdown && (
         <StyledCurrencyDropdown>
-          {currencies.availableCurrencies.map((curr) => (
+          {availableCurrencies.availableCurrencies.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
               {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
