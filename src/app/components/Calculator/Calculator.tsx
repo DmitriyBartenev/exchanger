@@ -54,10 +54,6 @@ export const Calculator: React.FC = () => {
   };
 
   const swapCurrency = () => {
-    setAmount((prevAmount) => ({
-      currency1: prevAmount.currency2,
-      currency2: prevAmount.currency1,
-    }));
     setSelectedCurrency((prevSelectedCurrency) => [
       prevSelectedCurrency[1],
       prevSelectedCurrency[0],
@@ -89,19 +85,19 @@ export const Calculator: React.FC = () => {
         }),
       );
     }
-  }, [dispatch, selectedCurrency]);
+  }, [dispatch, selectedCurrency[0].ticker, selectedCurrency[1].ticker]);
 
   useEffect(() => {
-    if (minimalExchangeAmount) {
+    if (minimalExchangeAmount.minAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency1: minimalExchangeAmount.minAmount?.toString(),
+        currency1: String(minimalExchangeAmount.minAmount),
       }));
     }
-  }, [minimalExchangeAmount]);
+  }, [minimalExchangeAmount.minAmount]);
 
   useEffect(() => {
-    if (amount.currency1 && minimalExchangeAmount) {
+    if (amount.currency1) {
       dispatch(
         getEstimatedExchangeAmount({
           send_amount: amount.currency1,
@@ -110,21 +106,17 @@ export const Calculator: React.FC = () => {
         }),
       );
     }
-  }, [dispatch, amount.currency1, selectedCurrency, minimalExchangeAmount]);
+  }, [dispatch, amount.currency1]);
 
   useEffect(() => {
-    const {currency1} = amount;
-    const {minAmount} = minimalExchangeAmount;
-    const {estimatedAmount} = estimatedExchangeAmount;
-
-    if (currency1 !== '' && minAmount && estimatedAmount) {
+    if (amount.currency1 && estimatedExchangeAmount.estimatedAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency2: estimatedAmount?.toString(),
+        currency2: String(estimatedExchangeAmount.estimatedAmount),
       }));
       setExchangeError(null);
     }
-  }, [amount.currency1, minimalExchangeAmount.minAmount, estimatedExchangeAmount.estimatedAmount]);
+  }, [estimatedExchangeAmount.estimatedAmount]);
 
   return (
     <StyledCalculator>
