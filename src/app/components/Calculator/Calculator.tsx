@@ -9,7 +9,6 @@ import {
   getEstimatedExchangeAmount,
   getMinimalExchangeAmount,
 } from '~/lib/redux/slices/thunks';
-import {EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
 
 import {SwapButton} from '~/ui';
 
@@ -30,7 +29,6 @@ export const Calculator: React.FC = () => {
     {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
     {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
   ]);
-  const [exchangeError, setExchangeError] = useState<EstimatedExchangeAmountError | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -61,14 +59,6 @@ export const Calculator: React.FC = () => {
 
   const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (estimatedExchangeAmount.error) {
-      setAmount((prev) => ({
-        ...prev,
-        currency2: '-',
-      }));
-      setExchangeError(estimatedExchangeAmount.error);
-    }
   };
 
   useEffect(() => {
@@ -113,9 +103,14 @@ export const Calculator: React.FC = () => {
         ...prev,
         currency2: String(estimatedExchangeAmount.estimatedAmount),
       }));
-      setExchangeError(null);
     }
-  }, [estimatedExchangeAmount.estimatedAmount]);
+    if (estimatedExchangeAmount.error) {
+      setAmount((prev) => ({
+        ...prev,
+        currency2: '-',
+      }));
+    }
+  }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
 
   return (
     <StyledCalculator>
@@ -144,8 +139,7 @@ export const Calculator: React.FC = () => {
               minimalExchangeAmount.status === 'loading'
             }
             index={selectedCurrency.indexOf(selectedCurrency[1])}
-            exchangeError={exchangeError}
-            disabled={true}
+            exchangeError={estimatedExchangeAmount.error}
           />
         </StyledExchangeContainer>
         <CryptoAdress />
