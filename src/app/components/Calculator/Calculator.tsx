@@ -129,7 +129,7 @@ export const Calculator: React.FC = () => {
             onChange={handleAmountChange}
             handleCurrencyChange={handleCurrencyChange}
             name="currency1"
-            isLoading={minimalExchangeAmount.status}
+            isLoading={minimalExchangeAmount.status === 'loading'}
             index={0}
           />
           <SwapButton type="button" onClick={swapCurrency} />
@@ -139,7 +139,10 @@ export const Calculator: React.FC = () => {
             onChange={handleAmountChange}
             handleCurrencyChange={handleCurrencyChange}
             name="currency2"
-            isLoading={estimatedExchangeAmount.status}
+            isLoading={
+              estimatedExchangeAmount.status === 'loading' ||
+              minimalExchangeAmount.status === 'loading'
+            }
             index={1}
             exchangeError={exchangeError}
             disabled={true}

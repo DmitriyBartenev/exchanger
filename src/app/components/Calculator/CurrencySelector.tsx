@@ -20,9 +20,9 @@ interface CurrencySelectorProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   exchangeError?: EstimatedExchangeAmountError | null;
   selectedCurrency: {ticker: string; image: string};
-  isLoading: 'idle' | 'loading' | 'failed';
   value: string | undefined;
   disabled?: boolean;
+  isLoading: boolean;
   index: number;
   name: string;
 }
@@ -32,9 +32,9 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   onChange,
   exchangeError,
   selectedCurrency,
-  isLoading,
   value,
   disabled,
+  isLoading,
   index,
   name,
 }) => {
@@ -49,7 +49,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 
   return (
     <StyledCurrencySelector>
-      {isLoading === 'loading' ? (
+      {isLoading ? (
         <ExchangeAmountSpinner />
       ) : (
         <ExchangeInput
