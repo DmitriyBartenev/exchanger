@@ -21,7 +21,6 @@ interface CurrencySelectorProps {
   exchangeError?: EstimatedExchangeAmountError | null;
   selectedCurrency: {ticker: string; image: string};
   value: string | undefined;
-  disabled?: boolean;
   isLoading: boolean;
   index: number;
   name: string;
@@ -33,7 +32,6 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   exchangeError,
   selectedCurrency,
   value,
-  disabled,
   isLoading,
   index,
   name,
@@ -57,7 +55,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           value={value ?? ''}
           onChange={onChange}
           name={name}
-          disabled={disabled}
+          disabled={index === 1}
         />
       )}
       {showDropdown ? (
@@ -82,7 +80,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           ))}
         </StyledCurrencyDropdown>
       )}
-      {exchangeError && <span>{exchangeError.message}</span>}
+      {exchangeError && <span>{exchangeError.message ?? exchangeError.error}</span>}
     </StyledCurrencySelector>
   );
 };
