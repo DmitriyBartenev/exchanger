@@ -12,10 +12,15 @@ import {
 
 import {SwapButton} from '~/ui';
 
-import {StyledCalculator, StyledCalculatorForm, StyledExchangeContainer} from './styles';
+import {
+  StyledCalculator,
+  StyledCalculatorForm,
+  StyledCurrencySelector,
+  StyledExchangeContainer,
+} from './styles';
 
 import CryptoAdress from './CryptoAdress';
-import CurrencySelector from './CurrencySelector';
+import {CurrencySelector} from './CurrencySelector';
 
 export const Calculator: React.FC = () => {
   const [amount, setAmount] = useState<{
@@ -127,7 +132,9 @@ export const Calculator: React.FC = () => {
             isLoading={minimalExchangeAmount.status === 'loading'}
             index={selectedCurrency.indexOf(selectedCurrency[0])}
           />
+
           <SwapButton type="button" onClick={swapCurrency} />
+
           <CurrencySelector
             value={amount?.currency2}
             selectedCurrency={selectedCurrency[1]}
