@@ -13,7 +13,7 @@ interface ExchangeInputProps {
 
 export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   showDropdown,
-  type,
+  type = 'text',
   value,
   name,
   onChange,
@@ -21,7 +21,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
 }) => {
   return (
     <StyledExchangeInput
-      type={type !== 'text' ? type : 'text'}
+      type={type}
       placeholder={showDropdown ? 'Search' : ''}
       $showDropdown={showDropdown}
       value={value}
