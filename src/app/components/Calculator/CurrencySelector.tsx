@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 
-import {useAppSelector} from '~/lib/redux/hooks';
+import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
+import {setSearchValue} from '~/lib/redux/slices/availableCurrenciesSlice';
 import {rootSelector} from '~/lib/redux/slices/selectors';
 import {EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
 
@@ -26,7 +27,7 @@ interface CurrencySelectorProps {
   name: string;
 }
 
-const CurrencySelector: React.FC<CurrencySelectorProps> = ({
+export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   handleCurrencyChange,
   onChange,
   exchangeError,
@@ -38,51 +39,130 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  const {availableCurrencies} = useAppSelector(rootSelector);
-
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
     setShowDropdown((prev) => !prev);
   };
 
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
   return (
     <StyledCurrencySelector>
-      {isLoading ? (
-        <ExchangeAmountSpinner />
-      ) : (
-        <ExchangeInput
-          showDropdown={showDropdown}
-          value={value ?? ''}
-          onChange={onChange}
-          name={name}
-          disabled={index === 1}
-        />
-      )}
-      {showDropdown ? (
-        <CloseButton onClick={() => setShowDropdown((prev) => !prev)} />
-      ) : (
-        <SelectCurrencyButton
-          icon={<ArrowIcon />}
-          ticker={selectedCurrency.ticker.toUpperCase()}
-          image={selectedCurrency.image}
-          onClick={() => setShowDropdown((prev) => !prev)}
-          availableCurrenciesFetchStatus={availableCurrencies.status}
-        />
-      )}
-      {showDropdown && (
-        <StyledCurrencyDropdown>
-          {availableCurrencies.availableCurrencies.map((curr) => (
-            <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
-              {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
-              {curr.ticker.toUpperCase()}
-              <span>{curr.name}</span>
-            </li>
-          ))}
-        </StyledCurrencyDropdown>
-      )}
-      {exchangeError && <span>{exchangeError.message ?? exchangeError.error}</span>}
+      <Exchange
+        showDropdown={showDropdown}
+        value={value ?? ''}
+        onChange={onChange}
+        name={name}
+        disabled={index === 1}
+        isLoading={isLoading}
+      />
+      <SelectCurrency
+        toggleDropdown={toggleDropdown}
+        selectedCurrency={selectedCurrency}
+        showDropdown={showDropdown}
+      />
+      <CurrencyDropdown onSelectCurrency={onSelectCurrency} showDropdown={showDropdown} />
+      <ExchangeError exchangeError={exchangeError} />
     </StyledCurrencySelector>
   );
 };
 
-export default CurrencySelector;
+function Exchange(props: {
+  showDropdown: boolean;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
+  disabled: boolean;
+  isLoading: boolean;
+}) {
+  const {name, onChange, showDropdown, value, disabled, isLoading} = props;
+
+  const [searchCurrValue, setSearchCurrValue] = useState<string>('');
+
+  const dispatch = useAppDispatch();
+
+  const onSearchCurrencies = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value;
+
+    setSearchCurrValue(searchValue);
+
+    dispatch(setSearchValue(searchValue));
+  };
+
+  if (isLoading) return <ExchangeAmountSpinner />;
+
+  return (
+    <ExchangeInput
+      showDropdown={showDropdown}
+      value={showDropdown ? searchCurrValue : value}
+      onChange={showDropdown ? onSearchCurrencies : onChange}
+      name={name}
+      disabled={showDropdown ? false : disabled}
+    />
+  );
+}
+
+function SelectCurrency(props: {
+  selectedCurrency: {
+    ticker: string;
+    image: string;
+  };
+  showDropdown: boolean;
+  toggleDropdown: () => void;
+}) {
+  const {selectedCurrency, toggleDropdown, showDropdown} = props;
+
+  const {availableCurrencies} = useAppSelector(rootSelector);
+
+  if (showDropdown) return <CloseButton onClick={toggleDropdown} />;
+
+  return (
+    <SelectCurrencyButton
+      icon={<ArrowIcon />}
+      image={selectedCurrency.image}
+      ticker={selectedCurrency.ticker.toUpperCase()}
+      onClick={toggleDropdown}
+      status={availableCurrencies.status}
+    />
+  );
+}
+
+function CurrencyDropdown(props: {
+  showDropdown: boolean;
+  onSelectCurrency: (ticker: string, image: string) => void;
+}) {
+  const {showDropdown, onSelectCurrency} = props;
+
+  const {availableCurrencies} = useAppSelector(rootSelector);
+
+  if (showDropdown) {
+    return (
+      <StyledCurrencyDropdown>
+        {availableCurrencies.searchResults.map((curr) => (
+          <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
+            {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
+            {curr.ticker.toUpperCase()}
+            <span>{curr.name}</span>
+          </li>
+        ))}
+      </StyledCurrencyDropdown>
+    );
+  }
+
+  return null;
+}
+
+function ExchangeError(props: {
+  exchangeError?: {
+    error: string;
+    message: string;
+  } | null;
+}) {
+  const {exchangeError} = props;
+
+  if (exchangeError) return <span>{exchangeError.message ?? exchangeError.error}</span>;
+
+  return null;
+}
