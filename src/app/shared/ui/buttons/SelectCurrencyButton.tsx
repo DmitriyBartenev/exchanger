@@ -10,7 +10,7 @@ interface SelectCurrencyButtonProps {
   icon: React.ReactElement;
   image: string;
   onClick: () => void;
-  availableCurrenciesFetchStatus?: 'loading' | 'idle' | 'failed';
+  status?: 'loading' | 'idle' | 'failed';
 }
 
 export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
@@ -18,11 +18,11 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   icon,
   image,
   onClick,
-  availableCurrenciesFetchStatus,
+  status,
 }) => {
   return (
     <StyledSelectCurrencyButton onClick={onClick}>
-      {availableCurrenciesFetchStatus === 'loading' ? (
+      {status === 'loading' ? (
         <FetchCurrenciesSpinner />
       ) : (
         <>
