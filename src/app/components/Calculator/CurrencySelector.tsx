@@ -129,8 +129,6 @@ function SelectCurrency(props: {
 }) {
   const {selectedCurrency, toggleDropdown, showDropdown} = props;
 
-  const {availableCurrencies} = useAppSelector(rootSelector);
-
   if (showDropdown) return <CloseButton onClick={toggleDropdown} />;
 
   return (
@@ -139,7 +137,6 @@ function SelectCurrency(props: {
       image={selectedCurrency.image}
       ticker={selectedCurrency.ticker.toUpperCase()}
       onClick={toggleDropdown}
-      status={availableCurrencies.status}
     />
   );
 }
