@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
+import {useAppSelector} from '~/lib/redux/hooks';
+import {rootSelector} from '~/lib/redux/slices/selectors';
+
 import {StyledSelectCurrencyButton} from './styles';
 
 import {FetchCurrenciesSpinner} from '../spinners/FetchCurrenciesSpinner';
@@ -10,7 +13,6 @@ interface SelectCurrencyButtonProps {
   icon: React.ReactElement;
   image: string;
   onClick: () => void;
-  status?: 'loading' | 'idle' | 'failed';
 }
 
 export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
@@ -18,19 +20,36 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   icon,
   image,
   onClick,
-  status,
 }) => {
+  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
+    useAppSelector(rootSelector);
+
+  const isLoading = availableCurrencies.status === 'loading';
+  const isDisabled =
+    availableCurrencies.status === 'loading' ||
+    estimatedExchangeAmount.status === 'loading' ||
+    minimalExchangeAmount.status === 'loading';
+
   return (
-    <StyledSelectCurrencyButton onClick={onClick}>
-      {status === 'loading' ? (
-        <FetchCurrenciesSpinner />
-      ) : (
-        <>
-          {image && <Image src={image} alt={ticker} width={20} height={20} />}
-          {ticker}
-          {icon}
-        </>
-      )}
+    <StyledSelectCurrencyButton onClick={onClick} disabled={isDisabled}>
+      {renderButtonContent(isLoading, image, ticker, icon)}
     </StyledSelectCurrencyButton>
   );
 };
+
+function renderButtonContent(
+  isLoading: boolean,
+  image: string,
+  ticker: string,
+  icon: React.ReactElement,
+) {
+  if (isLoading) return <FetchCurrenciesSpinner />;
+
+  return (
+    <>
+      {image && <Image src={image} alt={ticker} width={20} height={20} />}
+      {ticker}
+      {icon}
+    </>
+  );
+}
