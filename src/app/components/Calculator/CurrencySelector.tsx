@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 
-import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
-import {setSearchValue} from '~/lib/redux/slices/availableCurrenciesSlice';
+import {useAppSelector} from '~/lib/redux/hooks';
 import {rootSelector} from '~/lib/redux/slices/selectors';
-import {EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
+import {AvailableCurrenciesResponse, EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
 
 import {
   ArrowIcon,
@@ -38,6 +37,17 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   name,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const {availableCurrencies} = useAppSelector(rootSelector);
+
+  const filteredCurrencies = availableCurrencies.availableCurrencies.filter((currency) =>
+    currency.name.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  const onSearchCurrencies = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
 
   const onSelectCurrency = (ticker: string, image: string) => {
     handleCurrencyChange(ticker, image, index);
@@ -57,13 +67,19 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         name={name}
         disabled={index === 1}
         isLoading={isLoading}
+        searchValue={searchValue}
+        onSearchCurrencies={onSearchCurrencies}
       />
       <SelectCurrency
         toggleDropdown={toggleDropdown}
         selectedCurrency={selectedCurrency}
         showDropdown={showDropdown}
       />
-      <CurrencyDropdown onSelectCurrency={onSelectCurrency} showDropdown={showDropdown} />
+      <CurrencyDropdown
+        onSelectCurrency={onSelectCurrency}
+        showDropdown={showDropdown}
+        filteredCurrencies={filteredCurrencies}
+      />
       <ExchangeError exchangeError={exchangeError} />
     </StyledCurrencySelector>
   );
@@ -76,27 +92,26 @@ function Exchange(props: {
   name: string;
   disabled: boolean;
   isLoading: boolean;
+  searchValue: string;
+  onSearchCurrencies: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
-  const {name, onChange, showDropdown, value, disabled, isLoading} = props;
-
-  const [searchCurrValue, setSearchCurrValue] = useState<string>('');
-
-  const dispatch = useAppDispatch();
-
-  const onSearchCurrencies = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = event.target.value;
-
-    setSearchCurrValue(searchValue);
-
-    dispatch(setSearchValue(searchValue));
-  };
+  const {
+    name,
+    onChange,
+    showDropdown,
+    value,
+    disabled,
+    isLoading,
+    searchValue,
+    onSearchCurrencies,
+  } = props;
 
   if (isLoading) return <ExchangeAmountSpinner />;
 
   return (
     <ExchangeInput
       showDropdown={showDropdown}
-      value={showDropdown ? searchCurrValue : value}
+      value={showDropdown ? searchValue : value}
       onChange={showDropdown ? onSearchCurrencies : onChange}
       name={name}
       disabled={showDropdown ? false : disabled}
@@ -132,15 +147,14 @@ function SelectCurrency(props: {
 function CurrencyDropdown(props: {
   showDropdown: boolean;
   onSelectCurrency: (ticker: string, image: string) => void;
+  filteredCurrencies: AvailableCurrenciesResponse[];
 }) {
-  const {showDropdown, onSelectCurrency} = props;
-
-  const {availableCurrencies} = useAppSelector(rootSelector);
+  const {showDropdown, onSelectCurrency, filteredCurrencies} = props;
 
   if (showDropdown) {
     return (
       <StyledCurrencyDropdown>
-        {availableCurrencies.searchResults.map((curr) => (
+        {filteredCurrencies.map((curr) => (
           <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
             {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
             {curr.ticker.toUpperCase()}
