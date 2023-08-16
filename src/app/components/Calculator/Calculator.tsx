@@ -12,12 +12,7 @@ import {
 
 import {SwapButton} from '~/ui';
 
-import {
-  StyledCalculator,
-  StyledCalculatorForm,
-  StyledCurrencySelector,
-  StyledExchangeContainer,
-} from './styles';
+import {StyledCalculator, StyledCalculatorForm, StyledExchangeContainer} from './styles';
 
 import CryptoAdress from './CryptoAdress';
 import {CurrencySelector} from './CurrencySelector';
