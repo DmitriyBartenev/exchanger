@@ -16,7 +16,9 @@ const SpinnerWrapper = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  margin-left: 15px;
+  border: solid 1px ${colors.darkGray};
+  border-radius: 5px;
+  padding-left: 16px;
 `;
 
 const Dot = styled.div<{$mydelay: string}>`
