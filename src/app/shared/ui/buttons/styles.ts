@@ -34,14 +34,20 @@ export const StyledExchangeButton = styled.button`
     background-color: ${colors.darkBlue};
     border-color: ${colors.darkBlue};
   }
+  &:disabled {
+    cursor: default;
+    background-color: ${colors.lightGray};
+    border-color: ${colors.darkGray};
+    color: ${colors.darkGray};
+  }
 `;
 
 export const StyledSelectCurrencyButton = styled.button`
-  height: 100%;
   position: absolute;
   right: 0;
   top: 0;
   padding: 0 8px 0 34px;
+  height: 100%;
   border: none;
   border-left: solid 1px ${colors.darkGray};
   color: ${colors.black};
@@ -54,9 +60,26 @@ export const StyledSelectCurrencyButton = styled.button`
   line-height: 23px;
   font-weight: 400;
   cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
 `;
 
 export const StyledSwapButton = styled(DefaultButton)`
+  cursor: pointer;
+  svg {
+    path {
+      fill: ${colors.blue};
+    }
+  }
+  &:disabled {
+    cursor: default;
+    svg {
+      path {
+        fill: ${colors.paleBlue};
+      }
+    }
+  }
   @media screen and (max-width: 768px) {
     transform: rotate(90deg);
   }
