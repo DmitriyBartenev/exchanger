@@ -128,7 +128,7 @@ export const Calculator: React.FC = () => {
             index={selectedCurrency.indexOf(selectedCurrency[0])}
           />
 
-          <SwapButton type="button" onClick={swapCurrency} />
+          <SwapButton onClick={swapCurrency} />
 
           <CurrencySelector
             value={amount?.currency2}
