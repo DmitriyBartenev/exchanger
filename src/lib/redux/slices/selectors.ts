@@ -11,10 +11,16 @@ export const rootSelector = createSelector([selectRoot], (rootState) => {
     minimalExchangeAmount.status === 'loading' ||
     estimatedExchangeAmount.status === 'loading';
 
+  const isError =
+    availableCurrencies.status === 'failed' ||
+    minimalExchangeAmount.status === 'failed' ||
+    estimatedExchangeAmount.status === 'failed';
+
   return {
     availableCurrencies,
     minimalExchangeAmount,
     estimatedExchangeAmount,
     isLoading,
+    isError,
   };
 });
