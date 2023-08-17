@@ -22,6 +22,7 @@ interface CurrencySelectorProps {
   selectedCurrency: {ticker: string; image: string};
   value: string | undefined;
   isLoading: boolean;
+  disabled: boolean;
   index: number;
   name: string;
 }
@@ -33,6 +34,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   selectedCurrency,
   value,
   isLoading,
+  disabled,
   index,
   name,
 }) => {
@@ -65,7 +67,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         value={value ?? ''}
         onChange={onChange}
         name={name}
-        disabled={index === 1}
+        disabled={disabled}
         isLoading={isLoading}
         searchValue={searchValue}
         onSearchCurrencies={onSearchCurrencies}
