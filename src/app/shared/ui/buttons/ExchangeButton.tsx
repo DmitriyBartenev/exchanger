@@ -11,11 +11,11 @@ interface ExchangeButtonProps {
 }
 
 export const ExchangeButton: React.FC<ExchangeButtonProps> = ({title, type = 'button'}) => {
-  const {isLoading} = useAppSelector(rootSelector);
+  const {isLoading, isError} = useAppSelector(rootSelector);
 
   return (
     <StyledButtonContainer>
-      <StyledExchangeButton type={type} disabled={isLoading}>
+      <StyledExchangeButton type={type} disabled={isLoading || isError}>
         {title}
       </StyledExchangeButton>
     </StyledButtonContainer>
