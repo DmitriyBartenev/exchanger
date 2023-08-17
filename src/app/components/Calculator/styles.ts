@@ -70,9 +70,6 @@ export const StyledCurrencySelector = styled.div`
   background-color: ${colors.lightGray};
   border-radius: 5px;
   position: relative;
-  span {
-    color: ${colors.red};
-  }
 `;
 
 export const StyledCurrencyDropdown = styled.ul`
@@ -109,4 +106,15 @@ export const StyledCurrencyDropdown = styled.ul`
       background-color: ${colors.lightBlue};
     }
   }
+`;
+
+export const StyledExchangeError = styled.span`
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  color: ${colors.red};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
 `;
