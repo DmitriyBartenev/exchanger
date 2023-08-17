@@ -126,7 +126,7 @@ export const Calculator: React.FC = () => {
             name="currency1"
             isLoading={minimalExchangeAmount.status === 'loading'}
             index={selectedCurrency.indexOf(selectedCurrency[0])}
-            disabled={false}
+            disabled={minimalExchangeAmount.error ? true : false}
             error={minimalExchangeAmount.status === 'failed'}
           />
 
