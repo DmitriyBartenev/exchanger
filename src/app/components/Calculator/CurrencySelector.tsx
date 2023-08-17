@@ -13,16 +13,16 @@ import {
   SelectCurrencyButton,
 } from '~/app/shared/ui';
 
-import {StyledCurrencyDropdown, StyledCurrencySelector} from './styles';
+import {StyledCurrencyDropdown, StyledCurrencySelector, StyledExchangeError} from './styles';
 
 interface CurrencySelectorProps {
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  exchangeError?: EstimatedExchangeAmountError | null;
   selectedCurrency: {ticker: string; image: string};
   value: string | undefined;
   isLoading: boolean;
   disabled: boolean;
+  error: boolean;
   index: number;
   name: string;
 }
@@ -30,11 +30,11 @@ interface CurrencySelectorProps {
 export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   handleCurrencyChange,
   onChange,
-  exchangeError,
   selectedCurrency,
   value,
   isLoading,
   disabled,
+  error,
   index,
   name,
 }) => {
@@ -71,6 +71,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         isLoading={isLoading}
         searchValue={searchValue}
         onSearchCurrencies={onSearchCurrencies}
+        error={error}
       />
       <SelectCurrency
         toggleDropdown={toggleDropdown}
@@ -82,7 +83,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         showDropdown={showDropdown}
         filteredCurrencies={filteredCurrencies}
       />
-      <ExchangeError exchangeError={exchangeError} />
+      <ExchangeError error={error} />
     </StyledCurrencySelector>
   );
 };
@@ -96,6 +97,7 @@ function Exchange(props: {
   isLoading: boolean;
   searchValue: string;
   onSearchCurrencies: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  error: boolean;
 }) {
   const {
     name,
@@ -106,6 +108,7 @@ function Exchange(props: {
     isLoading,
     searchValue,
     onSearchCurrencies,
+    error,
   } = props;
 
   if (isLoading) return <ExchangeAmountSpinner />;
@@ -117,6 +120,7 @@ function Exchange(props: {
       onChange={showDropdown ? onSearchCurrencies : onChange}
       name={name}
       disabled={showDropdown ? false : disabled}
+      error={error}
     />
   );
 }
@@ -167,15 +171,18 @@ function CurrencyDropdown(props: {
   return null;
 }
 
-function ExchangeError(props: {
-  exchangeError?: {
-    error: string;
-    message: string;
-  } | null;
-}) {
-  const {exchangeError} = props;
+function ExchangeError(props: {error: boolean}) {
+  const {error} = props;
+  const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
 
-  if (exchangeError) return <span>{exchangeError.message ?? exchangeError.error}</span>;
+  if (error && estimatedExchangeAmount.error)
+    return (
+      <StyledExchangeError>
+        {estimatedExchangeAmount.error.message ?? estimatedExchangeAmount.error.error}
+      </StyledExchangeError>
+    );
+  if (error && minimalExchangeAmount.error)
+    return <StyledExchangeError>{minimalExchangeAmount.error.error}</StyledExchangeError>;
 
   return null;
 }
