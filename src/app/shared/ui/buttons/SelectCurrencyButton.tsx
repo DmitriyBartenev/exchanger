@@ -21,29 +21,24 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   image,
   onClick,
 }) => {
-  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
-    useAppSelector(rootSelector);
+  const {availableCurrencies, isLoading} = useAppSelector(rootSelector);
 
-  const isLoading = availableCurrencies.status === 'loading';
-  const isDisabled =
-    availableCurrencies.status === 'loading' ||
-    estimatedExchangeAmount.status === 'loading' ||
-    minimalExchangeAmount.status === 'loading';
+  const isCurrenciesLoading = availableCurrencies.status === 'loading';
 
   return (
-    <StyledSelectCurrencyButton onClick={onClick} disabled={isDisabled}>
-      {renderButtonContent(isLoading, image, ticker, icon)}
+    <StyledSelectCurrencyButton onClick={onClick} disabled={isLoading}>
+      {renderButtonContent(isCurrenciesLoading, image, ticker, icon)}
     </StyledSelectCurrencyButton>
   );
 };
 
 function renderButtonContent(
-  isLoading: boolean,
+  isCurrenciesLoading: boolean,
   image: string,
   ticker: string,
   icon: React.ReactElement,
 ) {
-  if (isLoading) return <FetchCurrenciesSpinner />;
+  if (isCurrenciesLoading) return <FetchCurrenciesSpinner />;
 
   return (
     <>

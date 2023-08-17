@@ -11,16 +11,10 @@ interface SwapButtonProps {
 }
 
 export const SwapButton: React.FC<SwapButtonProps> = ({type = 'button', onClick}) => {
-  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} =
-    useAppSelector(rootSelector);
-
-  const isDisabled =
-    availableCurrencies.status === 'loading' ||
-    estimatedExchangeAmount.status === 'loading' ||
-    minimalExchangeAmount.status === 'loading';
+  const {isLoading} = useAppSelector(rootSelector);
 
   return (
-    <StyledSwapButton type={type} onClick={onClick} disabled={isDisabled}>
+    <StyledSwapButton type={type} onClick={onClick} disabled={isLoading}>
       <SwapIcon />
     </StyledSwapButton>
   );
