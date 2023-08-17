@@ -127,6 +127,7 @@ export const Calculator: React.FC = () => {
             isLoading={minimalExchangeAmount.status === 'loading'}
             index={selectedCurrency.indexOf(selectedCurrency[0])}
             disabled={false}
+            error={minimalExchangeAmount.status === 'failed'}
           />
 
           <SwapButton onClick={swapCurrency} />
@@ -139,8 +140,8 @@ export const Calculator: React.FC = () => {
             name="currency2"
             isLoading={isLoading}
             index={selectedCurrency.indexOf(selectedCurrency[1])}
-            exchangeError={estimatedExchangeAmount.error}
             disabled={true}
+            error={estimatedExchangeAmount.status === 'failed'}
           />
         </StyledExchangeContainer>
         <CryptoAdress />
