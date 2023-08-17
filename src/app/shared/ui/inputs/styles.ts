@@ -14,10 +14,10 @@ export const StyledCalculatorInput = styled.input`
   padding: 13px 0 13px 16px;
 `;
 
-interface StyledExchangeInputProps {
-  $showDropdown: boolean;
-}
-
-export const StyledExchangeInput = styled(StyledCalculatorInput)<StyledExchangeInputProps>`
-  border-radius: ${({$showDropdown}) => ($showDropdown ? '5px 5px 0 0' : '5px')};
+export const StyledExchangeInput = styled(StyledCalculatorInput)<{
+  $showdropdown: boolean;
+  $error: boolean;
+}>`
+  border-radius: ${({$showdropdown}) => ($showdropdown ? '5px 5px 0 0' : '5px')};
+  border-color: ${({$error}) => ($error ? colors.red : colors.lightGray)};
 `;

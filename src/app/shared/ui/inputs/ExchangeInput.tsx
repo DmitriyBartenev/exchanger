@@ -9,6 +9,7 @@ interface ExchangeInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  error: boolean;
 }
 
 export const ExchangeInput: React.FC<ExchangeInputProps> = ({
@@ -18,12 +19,14 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   name,
   onChange,
   disabled,
+  error,
 }) => {
   return (
     <StyledExchangeInput
       type={type}
       placeholder={showDropdown ? 'Search' : ''}
-      $showDropdown={showDropdown}
+      $showdropdown={showDropdown}
+      $error={error}
       value={value}
       name={name}
       onChange={onChange}
