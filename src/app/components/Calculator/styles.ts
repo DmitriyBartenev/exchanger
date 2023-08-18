@@ -108,6 +108,15 @@ export const StyledCurrencyDropdown = styled.ul`
   }
 `;
 
+export const StyledNotFoundMessage = styled.span`
+  display: block;
+  font-size: 16px;
+  line-height: 23px;
+  padding: 13px 0 13px 16px;
+  font-weight: 400;
+  cursor: default;
+`;
+
 export const StyledExchangeError = styled.span`
   display: block;
   position: absolute;
