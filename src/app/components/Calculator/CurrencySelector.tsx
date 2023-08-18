@@ -13,7 +13,12 @@ import {
   SelectCurrencyButton,
 } from '~/app/shared/ui';
 
-import {StyledCurrencyDropdown, StyledCurrencySelector, StyledExchangeError} from './styles';
+import {
+  StyledCurrencyDropdown,
+  StyledCurrencySelector,
+  StyledExchangeError,
+  StyledNotFoundMessage,
+} from './styles';
 
 interface CurrencySelectorProps {
   handleCurrencyChange: (ticker: string, image: string, index: number) => void;
@@ -157,13 +162,17 @@ function CurrencyDropdown(props: {
   if (showDropdown) {
     return (
       <StyledCurrencyDropdown>
-        {filteredCurrencies.map((curr) => (
-          <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
-            {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
-            {curr.ticker.toUpperCase()}
-            <span>{curr.name}</span>
-          </li>
-        ))}
+        {filteredCurrencies.length > 0 ? (
+          filteredCurrencies.map((curr) => (
+            <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
+              {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
+              {curr.ticker.toUpperCase()}
+              <span>{curr.name}</span>
+            </li>
+          ))
+        ) : (
+          <StyledNotFoundMessage>No results found</StyledNotFoundMessage>
+        )}
       </StyledCurrencyDropdown>
     );
   }
