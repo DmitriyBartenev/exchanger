@@ -87,6 +87,28 @@ export const StyledCurrencyDropdown = styled.ul`
   border: solid 1px ${colors.darkGray};
   border-top: none;
   border-radius: 0 0px 5px 5px;
+
+  scrollbar-width: thin;
+  scrollbar-color: ${colors.darkGray} ${colors.lightGray};
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${colors.lightBlue};
+    border-radius: 5px 0 5px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${colors.paleBlue};
+    border-radius: 5px 0 5px 0;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${colors.blue};
+  }
+
   li {
     display: flex;
     justify-content: flex-start;
