@@ -10,6 +10,7 @@ interface ExchangeInputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   error: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export const ExchangeInput: React.FC<ExchangeInputProps> = ({
@@ -20,6 +21,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   onChange,
   disabled,
   error,
+  inputRef,
 }) => {
   return (
     <StyledExchangeInput
@@ -31,6 +33,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
       name={name}
       onChange={onChange}
       disabled={disabled}
+      ref={inputRef}
     />
   );
 };
