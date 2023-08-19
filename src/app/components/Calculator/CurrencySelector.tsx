@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import React, {useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 
 import {useAppSelector} from '~/lib/redux/hooks';
 import {rootSelector} from '~/lib/redux/slices/selectors';
-import {AvailableCurrenciesResponse, EstimatedExchangeAmountError} from '~/lib/redux/slices/types';
+import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
 
 import {
   ArrowIcon,
@@ -46,6 +46,8 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
 
+  const inputRef = createRef<HTMLInputElement>();
+
   const {availableCurrencies} = useAppSelector(rootSelector);
 
   const filteredCurrencies = availableCurrencies.availableCurrencies.filter((currency) =>
@@ -65,6 +67,12 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
     setShowDropdown((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (showDropdown) {
+      inputRef.current?.focus();
+    }
+  }, [showDropdown]);
+
   return (
     <StyledCurrencySelector>
       <Exchange
@@ -77,6 +85,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         searchValue={searchValue}
         onSearchCurrencies={onSearchCurrencies}
         error={error}
+        inputRef={inputRef}
       />
       <SelectCurrency
         toggleDropdown={toggleDropdown}
@@ -103,6 +112,7 @@ function Exchange(props: {
   searchValue: string;
   onSearchCurrencies: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
 }) {
   const {
     name,
@@ -114,6 +124,7 @@ function Exchange(props: {
     searchValue,
     onSearchCurrencies,
     error,
+    inputRef,
   } = props;
 
   if (isLoading) return <ExchangeAmountSpinner />;
@@ -126,6 +137,7 @@ function Exchange(props: {
       name={name}
       disabled={showDropdown ? false : disabled}
       error={error}
+      inputRef={inputRef}
     />
   );
 }
