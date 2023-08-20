@@ -16,8 +16,8 @@ export const StyledCalculatorInput = styled.input`
 
 export const StyledExchangeInput = styled(StyledCalculatorInput)<{
   $showdropdown: boolean;
-  $error: boolean;
+  $isError: boolean;
 }>`
   border-radius: ${({$showdropdown}) => ($showdropdown ? '5px 5px 0 0' : '5px')};
-  border-color: ${({$error}) => ($error ? colors.red : colors.darkGray)};
+  border-color: ${({$isError}) => ($isError ? colors.red : colors.darkGray)};
 `;
