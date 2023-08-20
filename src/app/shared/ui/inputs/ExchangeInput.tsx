@@ -9,7 +9,7 @@ interface ExchangeInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
-  error: boolean;
+  isError: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
 }
 
@@ -20,7 +20,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   name,
   onChange,
   disabled,
-  error,
+  isError,
   inputRef,
 }) => {
   return (
@@ -28,7 +28,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
       type={type}
       placeholder={showDropdown ? 'Search' : ''}
       $showdropdown={showDropdown}
-      $error={error}
+      $isError={isError}
       value={value}
       name={name}
       onChange={onChange}
