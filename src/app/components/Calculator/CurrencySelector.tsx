@@ -27,7 +27,6 @@ interface CurrencySelectorProps {
   value: string | undefined;
   isLoading: boolean;
   disabled: boolean;
-  error: boolean;
   index: number;
   name: string;
 }
@@ -39,7 +38,6 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   value,
   isLoading,
   disabled,
-  error,
   index,
   name,
 }) => {
@@ -84,7 +82,6 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         isLoading={isLoading}
         searchValue={searchValue}
         onSearchCurrencies={onSearchCurrencies}
-        error={error}
         inputRef={inputRef}
       />
       <SelectCurrency
@@ -97,7 +94,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         showDropdown={showDropdown}
         filteredCurrencies={filteredCurrencies}
       />
-      <ExchangeError error={error} />
+      <ExchangeError index={index} />
     </StyledCurrencySelector>
   );
 };
@@ -111,7 +108,6 @@ function Exchange(props: {
   isLoading: boolean;
   searchValue: string;
   onSearchCurrencies: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  error: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
 }) {
   const {
@@ -123,9 +119,10 @@ function Exchange(props: {
     isLoading,
     searchValue,
     onSearchCurrencies,
-    error,
     inputRef,
   } = props;
+
+  const {isError} = useAppSelector(rootSelector);
 
   if (isLoading) return <ExchangeAmountSpinner />;
 
@@ -136,7 +133,7 @@ function Exchange(props: {
       onChange={showDropdown ? onSearchCurrencies : onChange}
       name={name}
       disabled={showDropdown ? false : disabled}
-      error={error}
+      isError={isError}
       inputRef={inputRef}
     />
   );
@@ -192,18 +189,22 @@ function CurrencyDropdown(props: {
   return null;
 }
 
-function ExchangeError(props: {error: boolean}) {
-  const {error} = props;
+function ExchangeError(props: {index: number}) {
+  const {index} = props;
   const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
 
-  if (error && estimatedExchangeAmount.error)
-    return (
-      <StyledExchangeError>
-        {estimatedExchangeAmount.error.message ?? estimatedExchangeAmount.error.error}
-      </StyledExchangeError>
-    );
-  if (error && minimalExchangeAmount.error)
-    return <StyledExchangeError>{minimalExchangeAmount.error.error}</StyledExchangeError>;
+  const renderError = (errorMessage: string) => (
+    <StyledExchangeError>{errorMessage}</StyledExchangeError>
+  );
+
+  if (index === 1) {
+    const errorToRender =
+      minimalExchangeAmount.error?.error || estimatedExchangeAmount.error?.message;
+
+    if (errorToRender) {
+      return renderError(errorToRender);
+    }
+  }
 
   return null;
 }
