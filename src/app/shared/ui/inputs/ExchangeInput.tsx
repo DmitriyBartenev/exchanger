@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyledExchangeInput} from './styles';
+import {StyledCalculatorInput} from './styles';
 
 interface ExchangeInputProps {
   type?: 'email' | 'password' | 'text' | 'number';
@@ -9,7 +9,6 @@ interface ExchangeInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
-  isError: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
 }
 
@@ -20,15 +19,12 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   name,
   onChange,
   disabled,
-  isError,
   inputRef,
 }) => {
   return (
-    <StyledExchangeInput
+    <StyledCalculatorInput
       type={type}
       placeholder={showDropdown ? 'Search' : ''}
-      $showdropdown={showDropdown}
-      $isError={isError}
       value={value}
       name={name}
       onChange={onChange}
