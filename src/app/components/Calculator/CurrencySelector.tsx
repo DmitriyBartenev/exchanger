@@ -14,6 +14,7 @@ import {
 } from '~/app/shared/ui';
 
 import {
+  StyledContainer,
   StyledCurrencyDropdown,
   StyledCurrencySelector,
   StyledExchangeError,
@@ -46,7 +47,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 
   const inputRef = createRef<HTMLInputElement>();
 
-  const {availableCurrencies} = useAppSelector(rootSelector);
+  const {availableCurrencies, isError} = useAppSelector(rootSelector);
 
   const filteredCurrencies = availableCurrencies.availableCurrencies.filter((currency) =>
     currency.name.toLowerCase().includes(searchValue.toLowerCase()),
@@ -72,30 +73,32 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   }, [showDropdown]);
 
   return (
-    <StyledCurrencySelector>
-      <Exchange
-        showDropdown={showDropdown}
-        value={value ?? ''}
-        onChange={onChange}
-        name={name}
-        disabled={disabled}
-        isLoading={isLoading}
-        searchValue={searchValue}
-        onSearchCurrencies={onSearchCurrencies}
-        inputRef={inputRef}
-      />
-      <SelectCurrency
-        toggleDropdown={toggleDropdown}
-        selectedCurrency={selectedCurrency}
-        showDropdown={showDropdown}
-      />
+    <StyledContainer>
+      <StyledCurrencySelector $showDropdown={showDropdown} $isError={isError}>
+        <Exchange
+          showDropdown={showDropdown}
+          value={value ?? ''}
+          onChange={onChange}
+          name={name}
+          disabled={disabled}
+          isLoading={isLoading}
+          searchValue={searchValue}
+          onSearchCurrencies={onSearchCurrencies}
+          inputRef={inputRef}
+        />
+        <SelectCurrency
+          toggleDropdown={toggleDropdown}
+          selectedCurrency={selectedCurrency}
+          showDropdown={showDropdown}
+        />
+      </StyledCurrencySelector>
       <CurrencyDropdown
         onSelectCurrency={onSelectCurrency}
         showDropdown={showDropdown}
         filteredCurrencies={filteredCurrencies}
       />
       <ExchangeError index={index} />
-    </StyledCurrencySelector>
+    </StyledContainer>
   );
 };
 
@@ -122,18 +125,15 @@ function Exchange(props: {
     inputRef,
   } = props;
 
-  const {isError} = useAppSelector(rootSelector);
-
   if (isLoading) return <ExchangeAmountSpinner />;
 
   return (
     <ExchangeInput
-      showDropdown={showDropdown}
+      placeholder={showDropdown ? 'Search' : ''}
       value={showDropdown ? searchValue : value}
       onChange={showDropdown ? onSearchCurrencies : onChange}
-      name={name}
       disabled={showDropdown ? false : disabled}
-      isError={isError}
+      name={name}
       inputRef={inputRef}
     />
   );
