@@ -9,16 +9,20 @@ import {StyledSelectCurrencyButton} from './styles';
 import {FetchCurrenciesSpinner} from '../spinners/FetchCurrenciesSpinner';
 
 interface SelectCurrencyButtonProps {
+  type?: 'reset' | 'submit' | 'button';
   ticker: string;
   icon: React.ReactElement;
   image: string;
+  showDropdown: boolean;
   onClick: () => void;
 }
 
 export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
+  type = 'button',
   ticker,
   icon,
   image,
+  showDropdown,
   onClick,
 }) => {
   const {availableCurrencies, isLoading} = useAppSelector(rootSelector);
@@ -26,25 +30,21 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   const isCurrenciesLoading = availableCurrencies.status === 'loading';
 
   return (
-    <StyledSelectCurrencyButton onClick={onClick} disabled={isLoading}>
-      {renderButtonContent(isCurrenciesLoading, image, ticker, icon)}
+    <StyledSelectCurrencyButton
+      onClick={onClick}
+      disabled={isLoading}
+      type={type}
+      $showDropdown={showDropdown}
+    >
+      {isCurrenciesLoading ? (
+        <FetchCurrenciesSpinner />
+      ) : (
+        <>
+          {image && <Image src={image} alt={ticker} width={20} height={20} />}
+          {ticker}
+          {icon}
+        </>
+      )}
     </StyledSelectCurrencyButton>
   );
 };
-
-function renderButtonContent(
-  isCurrenciesLoading: boolean,
-  image: string,
-  ticker: string,
-  icon: React.ReactElement,
-) {
-  if (isCurrenciesLoading) return <FetchCurrenciesSpinner />;
-
-  return (
-    <>
-      {image && <Image src={image} alt={ticker} width={20} height={20} />}
-      {ticker}
-      {icon}
-    </>
-  );
-}
