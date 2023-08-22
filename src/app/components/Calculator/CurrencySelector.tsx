@@ -7,7 +7,6 @@ import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
 
 import {
   ArrowIcon,
-  CloseButton,
   ExchangeAmountSpinner,
   ExchangeInput,
   SelectCurrencyButton,
@@ -86,9 +85,11 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           onSearchCurrencies={onSearchCurrencies}
           inputRef={inputRef}
         />
-        <SelectCurrency
-          toggleDropdown={toggleDropdown}
-          selectedCurrency={selectedCurrency}
+        <SelectCurrencyButton
+          icon={<ArrowIcon />}
+          image={selectedCurrency.image}
+          ticker={selectedCurrency.ticker.toUpperCase()}
+          onClick={toggleDropdown}
           showDropdown={showDropdown}
         />
       </StyledCurrencySelector>
@@ -135,28 +136,6 @@ function Exchange(props: {
       disabled={showDropdown ? false : disabled}
       name={name}
       inputRef={inputRef}
-    />
-  );
-}
-
-function SelectCurrency(props: {
-  selectedCurrency: {
-    ticker: string;
-    image: string;
-  };
-  showDropdown: boolean;
-  toggleDropdown: () => void;
-}) {
-  const {selectedCurrency, toggleDropdown, showDropdown} = props;
-
-  if (showDropdown) return <CloseButton onClick={toggleDropdown} />;
-
-  return (
-    <SelectCurrencyButton
-      icon={<ArrowIcon />}
-      image={selectedCurrency.image}
-      ticker={selectedCurrency.ticker.toUpperCase()}
-      onClick={toggleDropdown}
     />
   );
 }
