@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import {ICurrency} from '~/app/types';
+import {IAmountToChange, ICurrency} from '~/app/types';
 
 import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
 import {rootSelector} from '~/lib/redux/slices/selectors';
@@ -18,12 +18,9 @@ import {StyledExchangeContainer} from './styles';
 import {CurrencySelector} from './CurrencySelector';
 
 export const ExchangeCurrencies = () => {
-  const [amount, setAmount] = useState<{
-    currency1: string | undefined;
-    currency2: string | undefined;
-  }>({
-    currency1: '',
-    currency2: '',
+  const [amount, setAmount] = useState<IAmountToChange>({
+    from: '',
+    to: '',
   });
   const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([
     {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
@@ -76,34 +73,34 @@ export const ExchangeCurrencies = () => {
     if (minimalExchangeAmount.minAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency1: String(minimalExchangeAmount.minAmount),
+        from: String(minimalExchangeAmount.minAmount),
       }));
     }
   }, [minimalExchangeAmount.minAmount]);
 
   useEffect(() => {
-    if (amount.currency1) {
+    if (amount.from) {
       dispatch(
         getEstimatedExchangeAmount({
-          send_amount: amount.currency1,
+          send_amount: amount.from,
           from: selectedCurrency[0]?.ticker,
           to: selectedCurrency[1]?.ticker,
         }),
       );
     }
-  }, [dispatch, amount.currency1]);
+  }, [dispatch, amount.from]);
 
   useEffect(() => {
-    if (amount.currency1 && estimatedExchangeAmount.estimatedAmount) {
+    if (amount.from && estimatedExchangeAmount.estimatedAmount) {
       setAmount((prev) => ({
         ...prev,
-        currency2: String(estimatedExchangeAmount.estimatedAmount),
+        to: String(estimatedExchangeAmount.estimatedAmount),
       }));
     }
     if (estimatedExchangeAmount.error) {
       setAmount((prev) => ({
         ...prev,
-        currency2: '-',
+        to: '-',
       }));
     }
   }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
@@ -111,11 +108,11 @@ export const ExchangeCurrencies = () => {
   return (
     <StyledExchangeContainer>
       <CurrencySelector
-        value={amount?.currency1}
+        value={amount?.from}
         selectedCurrency={selectedCurrency[0]}
         onChange={handleAmountChange}
         handleCurrencyChange={handleCurrencyChange}
-        name="currency1"
+        name="from"
         isLoading={minimalExchangeAmount.status === 'loading'}
         index={selectedCurrency.indexOf(selectedCurrency[0])}
         disabled={!!minimalExchangeAmount.error}
@@ -124,11 +121,11 @@ export const ExchangeCurrencies = () => {
       <SwapButton onClick={swapCurrency} />
 
       <CurrencySelector
-        value={amount?.currency2}
+        value={amount?.to}
         selectedCurrency={selectedCurrency[1]}
         onChange={handleAmountChange}
         handleCurrencyChange={handleCurrencyChange}
-        name="currency2"
+        name="to"
         isLoading={estimatedExchangeAmount.status === 'loading'}
         index={selectedCurrency.indexOf(selectedCurrency[1])}
         disabled={true}
