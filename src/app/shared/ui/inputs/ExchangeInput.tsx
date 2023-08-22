@@ -5,26 +5,26 @@ import {StyledCalculatorInput} from './styles';
 interface ExchangeInputProps {
   type?: 'email' | 'password' | 'text' | 'number';
   name: string;
-  showDropdown: boolean;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   inputRef: React.RefObject<HTMLInputElement>;
+  placeholder?: string;
 }
 
 export const ExchangeInput: React.FC<ExchangeInputProps> = ({
-  showDropdown,
   type = 'text',
   value,
   name,
   onChange,
   disabled,
   inputRef,
+  placeholder,
 }) => {
   return (
     <StyledCalculatorInput
       type={type}
-      placeholder={showDropdown ? 'Search' : ''}
+      placeholder={placeholder}
       value={value}
       name={name}
       onChange={onChange}
