@@ -43,13 +43,12 @@ export const StyledExchangeButton = styled.button`
 `;
 
 export const StyledSelectCurrencyButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 0 8px 0 34px;
   height: 100%;
+  width: fit-content;
+  padding: 0 8px 0 34px;
   border: none;
   border-left: solid 1px ${colors.darkGray};
+  border-radius: 0 5px 5px 0;
   color: ${colors.black};
   display: flex;
   justify-content: space-between;
