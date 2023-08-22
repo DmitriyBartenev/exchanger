@@ -42,7 +42,7 @@ export const StyledExchangeButton = styled.button`
   }
 `;
 
-export const StyledSelectCurrencyButton = styled.button`
+export const StyledSelectCurrencyButton = styled.button<{$showDropdown: boolean}>`
   height: 100%;
   width: fit-content;
   padding: 0 8px 0 34px;
@@ -59,8 +59,24 @@ export const StyledSelectCurrencyButton = styled.button`
   line-height: 23px;
   font-weight: 400;
   cursor: pointer;
+  svg {
+    transition: transform 0.2s ease-in-out;
+    transform: ${({$showDropdown}) => ($showDropdown ? 'rotate(180deg)' : 'none')};
+  }
+  &:hover {
+    svg {
+      path {
+        stroke: ${colors.blue};
+      }
+    }
+  }
   &:disabled {
     cursor: default;
+    svg {
+      path {
+        stroke: ${colors.paleBlue};
+      }
+    }
   }
 `;
 
@@ -82,9 +98,4 @@ export const StyledSwapButton = styled(DefaultButton)`
   @media screen and (max-width: 768px) {
     transform: rotate(90deg);
   }
-`;
-
-export const StyledCloseButton = styled(StyledSelectCurrencyButton)`
-  border: none;
-  padding: 0 8px;
 `;
