@@ -32,7 +32,7 @@ export const Calculator: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const {estimatedExchangeAmount, minimalExchangeAmount, isLoading} = useAppSelector(rootSelector);
+  const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -137,7 +137,7 @@ export const Calculator: React.FC = () => {
             onChange={handleAmountChange}
             handleCurrencyChange={handleCurrencyChange}
             name="currency2"
-            isLoading={isLoading}
+            isLoading={estimatedExchangeAmount.status === 'loading'}
             index={selectedCurrency.indexOf(selectedCurrency[1])}
             disabled={true}
           />
