@@ -64,23 +64,32 @@ export const StyledAdressSubmit = styled.div`
   }
 `;
 
-export const StyledCurrencySelector = styled.div`
+export const StyledContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 50px;
   background-color: ${colors.lightGray};
-  border-radius: 5px;
-  position: relative;
+`;
+
+export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isError: boolean}>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px ${({$isError}) => ($isError ? colors.red : colors.darkGray)};
+  border-radius: ${({$showDropdown}) => ($showDropdown ? '5px 5px 0 0' : '5px')};
 `;
 
 export const StyledCurrencyDropdown = styled.ul`
-  position: absolute;
-  z-index: 2;
   width: 100%;
   max-height: 142px;
+  position: absolute;
+  z-index: 2;
   overflow: auto;
   list-style: none;
   left: 0;
-  top: 100;
+  top: 100%;
   padding: 0;
   margin: 0;
   background-color: ${colors.lightGray};
