@@ -14,10 +14,9 @@ const spinAnimation = keyframes`
 const SpinnerWrapper = styled.div`
   display: inline-block;
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
-  border: solid 1px ${colors.darkGray};
-  border-radius: 5px;
   padding-left: 16px;
 `;
 
