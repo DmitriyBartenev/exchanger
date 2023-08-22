@@ -13,3 +13,7 @@ export const StyledCalculatorInput = styled.input`
   line-height: 23px;
   padding: 13px 0 13px 16px;
 `;
+
+export const StyledAddressInput = styled(StyledCalculatorInput)`
+  border: solid 1px ${colors.darkGray};
+`;
