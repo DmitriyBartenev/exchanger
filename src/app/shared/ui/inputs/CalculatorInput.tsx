@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyledCalculatorInput} from './styles';
+import {StyledAddressInput} from './styles';
 
 interface CalculatorInputProps {
   type?: 'email' | 'password' | 'text' | 'number';
@@ -8,5 +8,5 @@ interface CalculatorInputProps {
 }
 
 export const CalculatorInput: React.FC<CalculatorInputProps> = ({placeholder, type = 'text'}) => {
-  return <StyledCalculatorInput type={type} placeholder={placeholder} required />;
+  return <StyledAddressInput type={type} placeholder={placeholder} required />;
 };
