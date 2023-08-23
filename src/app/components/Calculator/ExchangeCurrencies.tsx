@@ -1,6 +1,7 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import debounce from 'lodash.debounce';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {IAmountToChange, ICurrency} from '~/app/types';
 
@@ -35,6 +36,12 @@ export const ExchangeCurrencies = () => {
       [name]: value,
     }));
   };
+
+  const debouncedGetEstimatedExchangeAmount = useRef(
+    debounce((from, to, sendAmount) => {
+      dispatch(getEstimatedExchangeAmount({send_amount: sendAmount, from, to}));
+    }, 300),
+  );
 
   const handleCurrencyChange = (ticker: string, image: string, index: number) => {
     setSelectedCurrency((prevSelectedCurrency) => {
@@ -81,15 +88,13 @@ export const ExchangeCurrencies = () => {
 
   useEffect(() => {
     if (amount.from) {
-      dispatch(
-        getEstimatedExchangeAmount({
-          send_amount: amount.from,
-          from: selectedCurrency[0]?.ticker,
-          to: selectedCurrency[1]?.ticker,
-        }),
+      debouncedGetEstimatedExchangeAmount.current(
+        selectedCurrency[0].ticker,
+        selectedCurrency[1].ticker,
+        amount.from,
       );
     }
-  }, [dispatch, amount.from]);
+  }, [amount.from]);
 
   useEffect(() => {
     if (amount.from && estimatedExchangeAmount.estimatedAmount) {
