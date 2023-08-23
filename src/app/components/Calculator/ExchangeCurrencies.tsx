@@ -40,7 +40,7 @@ export const ExchangeCurrencies = () => {
   const debouncedGetEstimatedExchangeAmount = useRef(
     debounce((from, to, sendAmount) => {
       dispatch(getEstimatedExchangeAmount({send_amount: sendAmount, from, to}));
-    }, 300),
+    }, 500),
   );
 
   const handleCurrencyChange = (ticker: string, image: string, index: number) => {
