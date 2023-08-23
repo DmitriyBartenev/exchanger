@@ -152,12 +152,14 @@ function CurrencyDropdown(props: {
   useEffect(() => {
     if (searchValue) {
       debouncedFilterCurrencies(searchValue);
+    } else {
+      setFilteredCurrencies(availableCurrencies.availableCurrencies);
     }
 
     return () => {
       debouncedFilterCurrencies.cancel();
     };
-  }, [searchValue]);
+  }, [searchValue, availableCurrencies.availableCurrencies]);
 
   if (showDropdown) {
     return (
