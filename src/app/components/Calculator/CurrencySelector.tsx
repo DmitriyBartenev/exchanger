@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import Image from 'next/image';
 import React, {createRef, useEffect, useState} from 'react';
 
@@ -39,13 +40,9 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
 
+  const {isError} = useAppSelector(rootSelector);
+
   const inputRef = createRef<HTMLInputElement>();
-
-  const {availableCurrencies, isError} = useAppSelector(rootSelector);
-
-  const filteredCurrencies = availableCurrencies.availableCurrencies.filter((currency) =>
-    currency.name.toLowerCase().includes(searchValue.toLowerCase()),
-  );
 
   const onSearchCurrencies = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -91,7 +88,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       <CurrencyDropdown
         onSelectCurrency={onSelectCurrency}
         showDropdown={showDropdown}
-        filteredCurrencies={filteredCurrencies}
+        searchValue={searchValue}
       />
       <ExchangeError index={index} />
     </StyledContainer>
@@ -138,9 +135,29 @@ function Exchange(props: {
 function CurrencyDropdown(props: {
   showDropdown: boolean;
   onSelectCurrency: (ticker: string, image: string) => void;
-  filteredCurrencies: AvailableCurrenciesResponse[];
+  searchValue: string;
 }) {
-  const {showDropdown, onSelectCurrency, filteredCurrencies} = props;
+  const {showDropdown, onSelectCurrency, searchValue} = props;
+  const {availableCurrencies} = useAppSelector(rootSelector);
+
+  const [filteredCurrencies, setFilteredCurrencies] = useState<AvailableCurrenciesResponse[]>([]);
+
+  const debouncedFilterCurrencies = debounce((input) => {
+    const filtered = availableCurrencies.availableCurrencies.filter((currency) =>
+      currency.name.toLowerCase().includes(input.toLowerCase()),
+    );
+    setFilteredCurrencies(filtered);
+  }, 500);
+
+  useEffect(() => {
+    if (searchValue) {
+      debouncedFilterCurrencies(searchValue);
+    }
+
+    return () => {
+      debouncedFilterCurrencies.cancel();
+    };
+  }, [searchValue]);
 
   if (showDropdown) {
     return (
