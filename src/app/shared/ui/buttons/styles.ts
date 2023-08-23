@@ -90,6 +90,13 @@ export const StyledSwapButton = styled(DefaultButton)`
       fill: ${colors.blue};
     }
   }
+  &:hover {
+    svg {
+      path {
+        fill: ${colors.darkBlue};
+      }
+    }
+  }
   &:disabled {
     cursor: default;
     svg {
