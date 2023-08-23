@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.9.5",
+    "lodash.debounce": "^4.0.8",
     "next": "^13.4.20-canary.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/node": "20.3.1",
     "@types/react": "18.2.12",
     "@types/react-dom": "18.2.5",
