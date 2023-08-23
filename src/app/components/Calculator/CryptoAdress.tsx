@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {CalculatorInput, ExchangeButton} from '~/app/shared/ui';
+import {CalculatorInput, ExchangeButton} from '~/ui';
 
 import {StyledAddressContainer, StyledAdressSubmit} from './styles';
 
-const CryptoAdress: React.FC = () => {
+export const CryptoAdress: React.FC = () => {
   return (
     <StyledAddressContainer>
       <p>Your Ethereum address</p>
@@ -15,5 +15,3 @@ const CryptoAdress: React.FC = () => {
     </StyledAddressContainer>
   );
 };
-
-export default CryptoAdress;

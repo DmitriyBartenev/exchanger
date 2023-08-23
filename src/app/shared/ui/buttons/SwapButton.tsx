@@ -1,9 +1,11 @@
-import {useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
+import React from 'react';
+
+import {useAppSelector} from '~/redux/hooks';
+import {rootSelector} from '~/redux/slices/selectors';
+
+import {SwapIcon} from '~/ui';
 
 import {StyledSwapButton} from './styles';
-
-import {SwapIcon} from '../icons/SwapIcon';
 
 interface SwapButtonProps {
   type?: 'reset' | 'submit' | 'button';

@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import React from 'react';
 
-import {useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
+import {useAppSelector} from '~/redux/hooks';
+import {rootSelector} from '~/redux/slices/selectors';
+
+import {FetchCurrenciesSpinner} from '~/ui';
 
 import {StyledSelectCurrencyButton} from './styles';
-
-import {FetchCurrenciesSpinner} from '../spinners/FetchCurrenciesSpinner';
 
 interface SelectCurrencyButtonProps {
   type?: 'reset' | 'submit' | 'button';

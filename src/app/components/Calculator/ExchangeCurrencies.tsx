@@ -1,17 +1,18 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
+
 import {IAmountToChange, ICurrency} from '~/app/types';
 
-import {useAppDispatch, useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
+import {useAppDispatch, useAppSelector} from '~/redux/hooks';
+import {rootSelector} from '~/redux/slices/selectors';
 import {
   getAvailableCurrencies,
   getEstimatedExchangeAmount,
   getMinimalExchangeAmount,
-} from '~/lib/redux/slices/thunks';
+} from '~/redux/slices/thunks';
 
-import {SwapButton} from '~/app/shared/ui';
+import {SwapButton} from '~/ui';
 
 import {StyledExchangeContainer} from './styles';
 

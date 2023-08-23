@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 
-import {useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
+import {useAppSelector} from '~/redux/hooks';
+import {rootSelector} from '~/redux/slices/selectors';
 
 import {StyledButtonContainer, StyledExchangeButton} from './styles';
 

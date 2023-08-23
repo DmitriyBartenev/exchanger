@@ -1,16 +1,11 @@
 import Image from 'next/image';
 import React, {createRef, useEffect, useState} from 'react';
 
-import {useAppSelector} from '~/lib/redux/hooks';
-import {rootSelector} from '~/lib/redux/slices/selectors';
-import {AvailableCurrenciesResponse} from '~/lib/redux/slices/types';
+import {useAppSelector} from '~/redux/hooks';
+import {rootSelector} from '~/redux/slices/selectors';
+import {AvailableCurrenciesResponse} from '~/redux/slices/types';
 
-import {
-  ArrowIcon,
-  ExchangeAmountSpinner,
-  ExchangeInput,
-  SelectCurrencyButton,
-} from '~/app/shared/ui';
+import {ArrowIcon, ExchangeAmountSpinner, ExchangeInput, SelectCurrencyButton} from '~/ui';
 
 import {
   StyledContainer,
