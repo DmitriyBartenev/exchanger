@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+
 import {colors} from '~/app/styles/colors';
 
 export const StyledCalculator = styled.div`

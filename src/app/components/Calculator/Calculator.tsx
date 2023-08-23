@@ -1,10 +1,8 @@
-'use client';
-
 import React from 'react';
 
 import {StyledCalculator, StyledCalculatorForm} from './styles';
 
-import CryptoAdress from './CryptoAdress';
+import {CryptoAdress} from './CryptoAdress';
 import {ExchangeCurrencies} from './ExchangeCurrencies';
 
 export const Calculator: React.FC = () => {
@@ -16,7 +14,7 @@ export const Calculator: React.FC = () => {
     <StyledCalculator>
       <h1>Crypto Exchange</h1>
       <p>Exchange fast and easy</p>
-      <StyledCalculatorForm onSubmit={onSubmit}>
+      <StyledCalculatorForm>
         <ExchangeCurrencies />
         <CryptoAdress />
       </StyledCalculatorForm>

@@ -1,6 +1,7 @@
 'use client';
 
 import {keyframes, styled} from 'styled-components';
+
 import {colors} from '~/app/styles/colors';
 
 const spinAnimation = keyframes`
