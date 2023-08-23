@@ -121,7 +121,7 @@ function Exchange(props: {
     inputRef,
   } = props;
 
-  if (isLoading) return <ExchangeAmountSpinner />;
+  if (isLoading && !showDropdown) return <ExchangeAmountSpinner />;
 
   return (
     <ExchangeInput
@@ -167,17 +167,15 @@ function ExchangeError(props: {index: number}) {
   const {index} = props;
   const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
 
+  const errorToRender =
+    minimalExchangeAmount.error?.error || estimatedExchangeAmount.error?.message;
+
   const renderError = (errorMessage: string) => (
     <StyledExchangeError>{errorMessage}</StyledExchangeError>
   );
 
-  if (index === 1) {
-    const errorToRender =
-      minimalExchangeAmount.error?.error || estimatedExchangeAmount.error?.message;
-
-    if (errorToRender) {
-      return renderError(errorToRender);
-    }
+  if (index === 1 && errorToRender) {
+    return renderError(errorToRender);
   }
 
   return null;
