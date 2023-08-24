@@ -191,12 +191,23 @@ function CurrencyDropdown(props: {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>, ticker: string, image: string) => {
+    if (e.key == 'Enter') {
+      onSelectCurrency(ticker, image);
+    }
+  };
+
   if (showDropdown) {
     return (
       <StyledCurrencyDropdown ref={dropdownRef} onScroll={handleScroll}>
         {visibleCurrencies.length > 0 ? (
           visibleCurrencies.map((curr) => (
-            <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
+            <li
+              key={curr.ticker}
+              onClick={() => onSelectCurrency(curr.ticker, curr.image)}
+              onKeyDown={(e) => handleKeyDown(e, curr.ticker, curr.image)}
+              tabIndex={0}
+            >
               {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
               <span>{curr.name}</span>
