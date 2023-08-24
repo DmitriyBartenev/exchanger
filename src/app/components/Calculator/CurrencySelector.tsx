@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import Image from 'next/image';
-import React, {createRef, useEffect, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 
 import {useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
@@ -141,6 +141,12 @@ function CurrencyDropdown(props: {
   const {availableCurrencies} = useAppSelector(rootSelector);
 
   const [filteredCurrencies, setFilteredCurrencies] = useState<AvailableCurrenciesResponse[]>([]);
+  const [visibleCurrencies, setVisibleCurrencies] = useState<AvailableCurrenciesResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+
+  const itemsPerPage = 10;
 
   const debouncedFilterCurrencies = debounce((input) => {
     const filtered = availableCurrencies.availableCurrencies.filter((currency) =>
@@ -152,6 +158,7 @@ function CurrencyDropdown(props: {
   useEffect(() => {
     if (searchValue) {
       debouncedFilterCurrencies(searchValue);
+      setCurrentPage(1);
     } else {
       setFilteredCurrencies(availableCurrencies.availableCurrencies);
     }
@@ -161,11 +168,34 @@ function CurrencyDropdown(props: {
     };
   }, [searchValue, availableCurrencies.availableCurrencies]);
 
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const loadedCurrencies = filteredCurrencies.slice(0, endIndex);
+    setVisibleCurrencies(loadedCurrencies);
+  }, [currentPage, filteredCurrencies]);
+
+  const handleScroll = () => {
+    const dropdownElement = dropdownRef.current;
+
+    if (dropdownElement) {
+      const scrolledToBottom =
+        dropdownElement.scrollTop + dropdownElement.clientHeight >=
+        dropdownElement.scrollHeight - 20;
+
+      const hasMoreItemsToLoad = filteredCurrencies.length > visibleCurrencies.length;
+
+      if (scrolledToBottom && hasMoreItemsToLoad) {
+        setCurrentPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
   if (showDropdown) {
     return (
-      <StyledCurrencyDropdown>
-        {filteredCurrencies.length > 0 ? (
-          filteredCurrencies.map((curr) => (
+      <StyledCurrencyDropdown ref={dropdownRef} onScroll={handleScroll}>
+        {visibleCurrencies.length > 0 ? (
+          visibleCurrencies.map((curr) => (
             <li key={curr.ticker} onClick={() => onSelectCurrency(curr.ticker, curr.image)}>
               {curr.image && <Image src={curr.image} alt={curr.ticker} width={20} height={20} />}
               {curr.ticker.toUpperCase()}
