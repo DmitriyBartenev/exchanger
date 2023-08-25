@@ -13,6 +13,7 @@ interface SelectCurrencyButtonProps {
   ticker: string;
   icon: React.ReactElement;
   image: string;
+  buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
   showDropdown: boolean;
   onClick: () => void;
 }
@@ -22,6 +23,7 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   ticker,
   icon,
   image,
+  buttonRef,
   showDropdown,
   onClick,
 }) => {
@@ -34,6 +36,7 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
       onClick={onClick}
       disabled={isLoading}
       type={type}
+      ref={buttonRef}
       $showDropdown={showDropdown}
     >
       {isCurrenciesLoading ? (
