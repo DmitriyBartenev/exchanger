@@ -8,7 +8,7 @@ interface ExchangeInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
   placeholder?: string;
 }
 
