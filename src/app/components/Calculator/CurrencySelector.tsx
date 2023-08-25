@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import Image from 'next/image';
-import React, {createRef, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
@@ -42,7 +42,8 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
 
   const {isError} = useAppSelector(rootSelector);
 
-  const inputRef = createRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const onSearchCurrencies = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -66,22 +67,24 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   return (
     <StyledContainer>
       <StyledCurrencySelector $showDropdown={showDropdown} $isError={isError}>
-        <Exchange
-          showDropdown={showDropdown}
-          value={value ?? ''}
-          onChange={onChange}
-          name={name}
-          disabled={disabled}
-          isLoading={isLoading}
-          searchValue={searchValue}
-          onSearchCurrencies={onSearchCurrencies}
-          inputRef={inputRef}
-        />
+        {isLoading && !showDropdown ? (
+          <ExchangeAmountSpinner />
+        ) : (
+          <ExchangeInput
+            placeholder={showDropdown ? 'Search' : ''}
+            value={showDropdown ? searchValue : value ?? ''}
+            onChange={showDropdown ? onSearchCurrencies : onChange}
+            disabled={showDropdown ? false : disabled}
+            name={name}
+            inputRef={inputRef}
+          />
+        )}
         <SelectCurrencyButton
           icon={<ArrowIcon />}
           image={selectedCurrency.image}
           ticker={selectedCurrency.ticker.toUpperCase()}
           onClick={toggleDropdown}
+          buttonRef={buttonRef}
           showDropdown={showDropdown}
         />
       </StyledCurrencySelector>
@@ -89,55 +92,24 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         onSelectCurrency={onSelectCurrency}
         showDropdown={showDropdown}
         searchValue={searchValue}
+        inputRef={inputRef}
+        buttonRef={buttonRef}
+        setShowDropdown={setShowDropdown}
       />
       <ExchangeError index={index} />
     </StyledContainer>
   );
 };
 
-function Exchange(props: {
-  showDropdown: boolean;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
-  disabled: boolean;
-  isLoading: boolean;
-  searchValue: string;
-  onSearchCurrencies: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
-}) {
-  const {
-    name,
-    onChange,
-    showDropdown,
-    value,
-    disabled,
-    isLoading,
-    searchValue,
-    onSearchCurrencies,
-    inputRef,
-  } = props;
-
-  if (isLoading && !showDropdown) return <ExchangeAmountSpinner />;
-
-  return (
-    <ExchangeInput
-      placeholder={showDropdown ? 'Search' : ''}
-      value={showDropdown ? searchValue : value}
-      onChange={showDropdown ? onSearchCurrencies : onChange}
-      disabled={showDropdown ? false : disabled}
-      name={name}
-      inputRef={inputRef}
-    />
-  );
-}
-
 function CurrencyDropdown(props: {
   showDropdown: boolean;
+  setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>;
   onSelectCurrency: (ticker: string, image: string) => void;
   searchValue: string;
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
 }) {
-  const {showDropdown, onSelectCurrency, searchValue} = props;
+  const {showDropdown, onSelectCurrency, searchValue, inputRef, buttonRef, setShowDropdown} = props;
   const {availableCurrencies} = useAppSelector(rootSelector);
 
   const [filteredCurrencies, setFilteredCurrencies] = useState<AvailableCurrenciesResponse[]>([]);
@@ -154,26 +126,6 @@ function CurrencyDropdown(props: {
     );
     setFilteredCurrencies(filtered);
   }, 500);
-
-  useEffect(() => {
-    if (searchValue) {
-      debouncedFilterCurrencies(searchValue);
-      setCurrentPage(1);
-    } else {
-      setFilteredCurrencies(availableCurrencies.availableCurrencies);
-    }
-
-    return () => {
-      debouncedFilterCurrencies.cancel();
-    };
-  }, [searchValue, availableCurrencies.availableCurrencies]);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const loadedCurrencies = filteredCurrencies.slice(0, endIndex);
-    setVisibleCurrencies(loadedCurrencies);
-  }, [currentPage, filteredCurrencies]);
 
   const handleScroll = () => {
     const dropdownElement = dropdownRef.current;
@@ -196,6 +148,46 @@ function CurrencyDropdown(props: {
       onSelectCurrency(ticker, image);
     }
   };
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (searchValue) {
+      debouncedFilterCurrencies(searchValue);
+      setCurrentPage(1);
+    } else {
+      setFilteredCurrencies(availableCurrencies.availableCurrencies);
+    }
+
+    return () => {
+      debouncedFilterCurrencies.cancel();
+    };
+  }, [searchValue, availableCurrencies.availableCurrencies]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const loadedCurrencies = filteredCurrencies.slice(0, endIndex);
+    setVisibleCurrencies(loadedCurrencies);
+  }, [currentPage, filteredCurrencies]);
 
   if (showDropdown) {
     return (
