@@ -1,22 +1,18 @@
 import React from 'react';
 
-import {useAppSelector} from '~/redux/hooks';
-import {rootSelector} from '~/redux/slices/selectors';
-
 import {SwapIcon} from '~/ui';
 
 import {StyledSwapButton} from './styles';
 
 interface SwapButtonProps {
   type?: 'reset' | 'submit' | 'button';
+  disabled?: boolean;
   onClick: () => void;
 }
 
-export const SwapButton: React.FC<SwapButtonProps> = ({type = 'button', onClick}) => {
-  const {isLoading} = useAppSelector(rootSelector);
-
+export const SwapButton: React.FC<SwapButtonProps> = ({type = 'button', disabled, onClick}) => {
   return (
-    <StyledSwapButton type={type} onClick={onClick} disabled={isLoading}>
+    <StyledSwapButton type={type} onClick={onClick} disabled={disabled}>
       <SwapIcon />
     </StyledSwapButton>
   );
