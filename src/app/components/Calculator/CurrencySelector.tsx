@@ -6,7 +6,7 @@ import {useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
 import {AvailableCurrenciesResponse} from '~/redux/slices/types';
 
-import {ArrowIcon, ExchangeAmountSpinner, ExchangeInput, SelectCurrencyButton} from '~/ui';
+import {ExchangeAmountSpinner, ExchangeInput, SelectCurrencyButton} from '~/ui';
 
 import {
   StyledContainer,
@@ -21,8 +21,9 @@ interface CurrencySelectorProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedCurrency: {ticker: string; image: string};
   value: string | undefined;
-  isLoading: boolean;
-  disabled: boolean;
+  isLoadingInput: boolean;
+  disabledInput: boolean;
+  disabledButton: boolean;
   index: number;
   name: string;
 }
@@ -32,15 +33,16 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   onChange,
   selectedCurrency,
   value,
-  isLoading,
-  disabled,
+  isLoadingInput,
+  disabledInput,
+  disabledButton,
   index,
   name,
 }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const {isError} = useAppSelector(rootSelector);
+  const {isError, availableCurrencies} = useAppSelector(rootSelector);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -67,25 +69,26 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   return (
     <StyledContainer>
       <StyledCurrencySelector $showDropdown={showDropdown} $isError={isError}>
-        {isLoading && !showDropdown ? (
+        {isLoadingInput && !showDropdown ? (
           <ExchangeAmountSpinner />
         ) : (
           <ExchangeInput
             placeholder={showDropdown ? 'Search' : ''}
             value={showDropdown ? searchValue : value ?? ''}
             onChange={showDropdown ? onSearchCurrencies : onChange}
-            disabled={showDropdown ? false : disabled}
+            disabled={showDropdown ? false : disabledInput}
             name={name}
             inputRef={inputRef}
           />
         )}
         <SelectCurrencyButton
-          icon={<ArrowIcon />}
           image={selectedCurrency.image}
           ticker={selectedCurrency.ticker.toUpperCase()}
           onClick={toggleDropdown}
           buttonRef={buttonRef}
           showDropdown={showDropdown}
+          isLoading={availableCurrencies.status === 'loading'}
+          disabled={disabledButton}
         />
       </StyledCurrencySelector>
       <CurrencyDropdown
