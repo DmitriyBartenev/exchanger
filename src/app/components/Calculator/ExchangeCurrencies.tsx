@@ -13,9 +13,9 @@ import {
   getMinimalExchangeAmount,
 } from '~/redux/slices/thunks';
 
-import {SwapButton} from '~/ui';
+import {CalculatorInput, ExchangeButton, SwapButton} from '~/ui';
 
-import {StyledExchangeContainer} from './styles';
+import {StyledAddressContainer, StyledAdressSubmit, StyledExchangeContainer} from './styles';
 
 import {CurrencySelector} from './CurrencySelector';
 
@@ -28,6 +28,7 @@ export const ExchangeCurrencies = () => {
     {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
     {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
   ]);
+  const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -60,7 +61,8 @@ export const ExchangeCurrencies = () => {
 
   const dispatch = useAppDispatch();
 
-  const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
+  const {estimatedExchangeAmount, minimalExchangeAmount, isLoading, isError, availableCurrencies} =
+    useAppSelector(rootSelector);
 
   useEffect(() => {
     dispatch(getAvailableCurrencies());
@@ -88,6 +90,8 @@ export const ExchangeCurrencies = () => {
 
   useEffect(() => {
     if (amount.from) {
+      setToSelectorLoading(true);
+
       debouncedGetEstimatedExchangeAmount.current(
         selectedCurrency[0].ticker,
         selectedCurrency[1].ticker,
@@ -109,33 +113,50 @@ export const ExchangeCurrencies = () => {
         to: '-',
       }));
     }
+
+    setToSelectorLoading(false);
   }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
 
   return (
-    <StyledExchangeContainer>
-      <CurrencySelector
-        value={amount?.from}
-        selectedCurrency={selectedCurrency[0]}
-        onChange={handleAmountChange}
-        handleCurrencyChange={handleCurrencyChange}
-        name="from"
-        isLoading={minimalExchangeAmount.status === 'loading'}
-        index={selectedCurrency.indexOf(selectedCurrency[0])}
-        disabled={!!minimalExchangeAmount.error}
-      />
+    <>
+      <StyledExchangeContainer>
+        <CurrencySelector
+          value={amount?.from}
+          onChange={handleAmountChange}
+          selectedCurrency={selectedCurrency[0]}
+          handleCurrencyChange={handleCurrencyChange}
+          name="from"
+          index={selectedCurrency.indexOf(selectedCurrency[0])}
+          isLoadingInput={minimalExchangeAmount.status === 'loading'}
+          disabledInput={!!minimalExchangeAmount.error}
+          disabledButton={isLoading || toSelectorLoading}
+        />
 
-      <SwapButton onClick={swapCurrency} />
+        <SwapButton onClick={swapCurrency} disabled={isLoading || toSelectorLoading} />
 
-      <CurrencySelector
-        value={amount?.to}
-        selectedCurrency={selectedCurrency[1]}
-        onChange={handleAmountChange}
-        handleCurrencyChange={handleCurrencyChange}
-        name="to"
-        isLoading={estimatedExchangeAmount.status === 'loading'}
-        index={selectedCurrency.indexOf(selectedCurrency[1])}
-        disabled={true}
-      />
-    </StyledExchangeContainer>
+        <CurrencySelector
+          value={amount?.to}
+          onChange={handleAmountChange}
+          selectedCurrency={selectedCurrency[1]}
+          handleCurrencyChange={handleCurrencyChange}
+          name="to"
+          index={selectedCurrency.indexOf(selectedCurrency[1])}
+          isLoadingInput={toSelectorLoading}
+          disabledInput={true}
+          disabledButton={isLoading || toSelectorLoading}
+        />
+      </StyledExchangeContainer>
+      <StyledAddressContainer>
+        <p>Your Ethereum address</p>
+        <StyledAdressSubmit>
+          <CalculatorInput />
+          <ExchangeButton
+            title="Exchange"
+            type="submit"
+            disabled={isError || isLoading || toSelectorLoading}
+          />
+        </StyledAdressSubmit>
+      </StyledAddressContainer>
+    </>
   );
 };
