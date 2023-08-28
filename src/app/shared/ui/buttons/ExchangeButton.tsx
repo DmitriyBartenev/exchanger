@@ -1,23 +1,21 @@
-'use client';
-
 import React from 'react';
-
-import {useAppSelector} from '~/redux/hooks';
-import {rootSelector} from '~/redux/slices/selectors';
 
 import {StyledButtonContainer, StyledExchangeButton} from './styles';
 
 interface ExchangeButtonProps {
-  title: string;
   type?: 'button' | 'submit' | 'reset';
+  title: string;
+  disabled?: boolean;
 }
 
-export const ExchangeButton: React.FC<ExchangeButtonProps> = ({title, type = 'button'}) => {
-  const {isLoading, isError} = useAppSelector(rootSelector);
-
+export const ExchangeButton: React.FC<ExchangeButtonProps> = ({
+  type = 'button',
+  title,
+  disabled,
+}) => {
   return (
     <StyledButtonContainer>
-      <StyledExchangeButton type={type} disabled={isLoading || isError}>
+      <StyledExchangeButton type={type} disabled={disabled}>
         {title}
       </StyledExchangeButton>
     </StyledButtonContainer>
