@@ -141,7 +141,7 @@ export const ExchangeCurrencies = () => {
           handleCurrencyChange={handleCurrencyChange}
           name="to"
           index={selectedCurrency.indexOf(selectedCurrency[1])}
-          isLoadingInput={toSelectorLoading}
+          isLoadingInput={toSelectorLoading || minimalExchangeAmount.status === 'loading'}
           disabledInput={true}
           disabledButton={isLoading || toSelectorLoading}
         />
