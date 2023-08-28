@@ -72,6 +72,24 @@ export const StyledContainer = styled.div`
   width: 100%;
   height: 50px;
   background-color: ${colors.lightGray};
+  .dropdown-fade-enter {
+    opacity: 0;
+    height: 0;
+  }
+  .dropdown-fade-enter-active {
+    opacity: 1;
+    height: 142px;
+    transition: opacity 300ms, height 300ms;
+  }
+  .dropdown-fade-exit {
+    opacity: 1;
+    height: 142px;
+  }
+  .dropdown-fade-exit-active {
+    opacity: 0;
+    height: 0;
+    transition: opacity 300ms, height 300ms;
+  }
 `;
 
 export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isError: boolean}>`
