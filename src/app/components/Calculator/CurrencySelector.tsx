@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 import Image from 'next/image';
 import React, {useEffect, useRef, useState} from 'react';
+import {CSSTransition} from 'react-transition-group';
 
 import {useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
@@ -192,8 +193,14 @@ function CurrencyDropdown(props: {
     setVisibleCurrencies(loadedCurrencies);
   }, [currentPage, filteredCurrencies]);
 
-  if (showDropdown) {
-    return (
+  return (
+    <CSSTransition
+      in={showDropdown}
+      nodeRef={dropdownRef}
+      classNames="dropdown-fade"
+      timeout={500}
+      unmountOnExit
+    >
       <StyledCurrencyDropdown ref={dropdownRef} onScroll={handleScroll}>
         {visibleCurrencies.length > 0 ? (
           visibleCurrencies.map((curr) => (
@@ -212,10 +219,8 @@ function CurrencyDropdown(props: {
           <StyledNotFoundMessage>No results found</StyledNotFoundMessage>
         )}
       </StyledCurrencyDropdown>
-    );
-  }
-
-  return null;
+    </CSSTransition>
+  );
 }
 
 function ExchangeError(props: {index: number}) {
