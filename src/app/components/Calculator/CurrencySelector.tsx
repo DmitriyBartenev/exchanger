@@ -200,6 +200,7 @@ function CurrencyDropdown(props: {
       classNames="dropdown-fade"
       timeout={500}
       unmountOnExit
+      $filteredCurrencies={filteredCurrencies}
     >
       <StyledCurrencyDropdown ref={dropdownRef} onScroll={handleScroll}>
         {visibleCurrencies.length > 0 ? (
