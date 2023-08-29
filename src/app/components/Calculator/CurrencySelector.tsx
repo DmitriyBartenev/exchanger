@@ -83,8 +83,8 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           />
         )}
         <SelectCurrencyButton
-          image={selectedCurrency.image}
-          ticker={selectedCurrency.ticker.toUpperCase()}
+          image={selectedCurrency?.image}
+          ticker={selectedCurrency?.ticker.toUpperCase()}
           onClick={toggleDropdown}
           buttonRef={buttonRef}
           showDropdown={showDropdown}
