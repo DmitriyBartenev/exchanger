@@ -30,6 +30,7 @@ export const StyledCalculator = styled.div`
 
 export const StyledCalculatorForm = styled.form`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,14 +40,14 @@ export const StyledCalculatorForm = styled.form`
 
 export const StyledExchangeContainer = styled.div`
   width: 100%;
-  height: 50px;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 28px;
   @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
   }
 `;
 
@@ -80,7 +81,7 @@ export const StyledContainer = styled.div`
 
 export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isError: boolean}>`
   width: 100%;
-  height: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
