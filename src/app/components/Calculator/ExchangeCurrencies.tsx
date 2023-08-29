@@ -25,13 +25,16 @@ const initialCurrency = [
 ];
 
 export const ExchangeCurrencies = () => {
-  const storedCurrency = localStorage.getItem('selectedCurrency');
-  const initialSelectedCurrency = storedCurrency ? JSON.parse(storedCurrency) : initialCurrency;
   const [amount, setAmount] = useState<IAmountToChange>({
     from: '',
     to: '',
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>(initialSelectedCurrency);
+  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedSelectedCurrency = localStorage.getItem('selectedCurrency');
+      return storedSelectedCurrency ? JSON.parse(storedSelectedCurrency) : initialCurrency;
+    }
+  });
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,13 +73,15 @@ export const ExchangeCurrencies = () => {
 
   // Get Available Currencies
   useEffect(() => {
-    const storedSelectedCurrency = localStorage.getItem('selectedCurrency');
-    if (storedSelectedCurrency) {
-      setSelectedCurrency(JSON.parse(storedSelectedCurrency));
+    if (typeof window !== 'undefined') {
+      const storedSelectedCurrency = localStorage.getItem('selectedCurrency');
+      if (storedSelectedCurrency) {
+        setSelectedCurrency(JSON.parse(storedSelectedCurrency));
+      }
     }
 
     dispatch(getAvailableCurrencies());
-  }, []);
+  }, [dispatch]);
 
   // Get Minimal Exchange Amount
   useEffect(() => {
