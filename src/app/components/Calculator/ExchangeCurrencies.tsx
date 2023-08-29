@@ -19,15 +19,19 @@ import {StyledAddressContainer, StyledAdressSubmit, StyledExchangeContainer} fro
 
 import {CurrencySelector} from './CurrencySelector';
 
+const initialCurrency = [
+  {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
+  {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
+];
+
 export const ExchangeCurrencies = () => {
+  const storedCurrency = localStorage.getItem('selectedCurrency');
+  const initialSelectedCurrency = storedCurrency ? JSON.parse(storedCurrency) : initialCurrency;
   const [amount, setAmount] = useState<IAmountToChange>({
     from: '',
     to: '',
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([
-    {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
-    {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
-  ]);
+  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>(initialSelectedCurrency);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,14 +65,23 @@ export const ExchangeCurrencies = () => {
 
   const dispatch = useAppDispatch();
 
-  const {estimatedExchangeAmount, minimalExchangeAmount, isLoading, isError, availableCurrencies} =
+  const {estimatedExchangeAmount, minimalExchangeAmount, isLoading, isError} =
     useAppSelector(rootSelector);
 
+  // Get Available Currencies
   useEffect(() => {
+    const storedSelectedCurrency = localStorage.getItem('selectedCurrency');
+    if (storedSelectedCurrency) {
+      setSelectedCurrency(JSON.parse(storedSelectedCurrency));
+    }
+
     dispatch(getAvailableCurrencies());
   }, []);
 
+  // Get Minimal Exchange Amount
   useEffect(() => {
+    localStorage.setItem('selectedCurrency', JSON.stringify(selectedCurrency));
+
     if (selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
       dispatch(
         getMinimalExchangeAmount({
@@ -79,6 +92,7 @@ export const ExchangeCurrencies = () => {
     }
   }, [dispatch, selectedCurrency[0].ticker, selectedCurrency[1].ticker]);
 
+  // Set Minimal Exchange Amount
   useEffect(() => {
     if (minimalExchangeAmount.minAmount) {
       setAmount((prev) => ({
@@ -88,6 +102,7 @@ export const ExchangeCurrencies = () => {
     }
   }, [minimalExchangeAmount.minAmount]);
 
+  // Get Estimated Exchange Amount
   useEffect(() => {
     if (amount.from) {
       setToSelectorLoading(true);
@@ -100,6 +115,7 @@ export const ExchangeCurrencies = () => {
     }
   }, [amount.from]);
 
+  // Set Estimated Exchange Amount
   useEffect(() => {
     if (amount.from && estimatedExchangeAmount.estimatedAmount) {
       setAmount((prev) => ({
