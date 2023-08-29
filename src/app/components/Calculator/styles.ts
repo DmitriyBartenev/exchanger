@@ -1,9 +1,10 @@
 'use client';
 
 import {CSSTransition} from 'react-transition-group';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
 import {colors} from '~/app/styles/colors';
+import {ICurrency} from '~/app/types';
 
 export const StyledCalculator = styled.div`
   width: 100%;
@@ -87,7 +88,7 @@ export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isErr
 
 export const StyledCurrencyDropdown = styled.ul`
   width: 100%;
-  max-height: 142px;
+  max-height: 150px;
   position: absolute;
   z-index: 2;
   overflow: auto;
@@ -143,29 +144,26 @@ export const StyledCurrencyDropdown = styled.ul`
   }
 `;
 
-const dropdownAnimation = css`
+export const DropdownCSSTransition = styled(CSSTransition)<{$filteredCurrencies: ICurrency[]}>`
+  overflow: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? 'hidden' : 'auto')};
   &.dropdown-fade-enter {
     opacity: 0;
     height: 0;
   }
   &.dropdown-fade-enter-active {
     opacity: 1;
-    height: 142px;
+    height: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? '100%' : '300%')};
     transition: opacity 300ms, height 300ms;
   }
   &.dropdown-fade-exit {
     opacity: 1;
-    height: 142px;
+    height: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? '100%' : '300%')};
   }
   &.dropdown-fade-exit-active {
     opacity: 0;
     height: 0;
     transition: opacity 300ms, height 300ms;
   }
-`;
-
-export const DropdownCSSTransition = styled(CSSTransition)`
-  ${dropdownAnimation}
 `;
 
 export const StyledNotFoundMessage = styled.span`
