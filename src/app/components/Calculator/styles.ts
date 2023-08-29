@@ -39,6 +39,7 @@ export const StyledCalculatorForm = styled.form`
 
 export const StyledExchangeContainer = styled.div`
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,6 +52,7 @@ export const StyledExchangeContainer = styled.div`
 
 export const StyledAddressContainer = styled.div`
   width: 100%;
+  height: 100%;
   p {
     font-size: 16px;
     line-height: 23px;
@@ -72,7 +74,7 @@ export const StyledAdressSubmit = styled.div`
 export const StyledContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 100%;
   background-color: ${colors.lightGray};
 `;
 
@@ -88,7 +90,7 @@ export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isErr
 
 export const StyledCurrencyDropdown = styled.ul`
   width: 100%;
-  max-height: 150px;
+  max-height: 300%;
   position: absolute;
   z-index: 2;
   overflow: auto;
@@ -124,6 +126,7 @@ export const StyledCurrencyDropdown = styled.ul`
   }
 
   li {
+    height: 50px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -144,20 +147,32 @@ export const StyledCurrencyDropdown = styled.ul`
   }
 `;
 
-export const DropdownCSSTransition = styled(CSSTransition)<{$filteredCurrencies: ICurrency[]}>`
-  overflow: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? 'hidden' : 'auto')};
+export const DropdownCSSTransition = styled(CSSTransition as any)<{
+  $filteredCurrencies: ICurrency[];
+}>`
+  overflow: ${({$filteredCurrencies}) => ($filteredCurrencies.length <= 3 ? 'hidden' : 'auto')};
   &.dropdown-fade-enter {
     opacity: 0;
     height: 0;
   }
   &.dropdown-fade-enter-active {
     opacity: 1;
-    height: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? '100%' : '300%')};
+    height: ${({$filteredCurrencies}) =>
+      $filteredCurrencies.length === 0 || $filteredCurrencies.length === 1
+        ? '100%'
+        : $filteredCurrencies.length === 2
+        ? '200%'
+        : '300%'};
     transition: opacity 300ms, height 300ms;
   }
   &.dropdown-fade-exit {
     opacity: 1;
-    height: ${({$filteredCurrencies}) => ($filteredCurrencies.length === 0 ? '100%' : '300%')};
+    height: ${({$filteredCurrencies}) =>
+      $filteredCurrencies.length === 0 || $filteredCurrencies.length === 1
+        ? '100%'
+        : $filteredCurrencies.length === 2
+        ? '200%'
+        : '300%'};
   }
   &.dropdown-fade-exit-active {
     opacity: 0;
