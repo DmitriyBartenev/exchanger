@@ -2,11 +2,11 @@ import React from 'react';
 
 import {StyledAddressInput} from './styles';
 
-interface CalculatorInputProps {
+interface AddressInputProps {
   type?: 'email' | 'password' | 'text' | 'number';
   placeholder?: string;
 }
 
-export const CalculatorInput: React.FC<CalculatorInputProps> = ({placeholder, type = 'text'}) => {
+export const AddressInput: React.FC<AddressInputProps> = ({placeholder, type = 'text'}) => {
   return <StyledAddressInput type={type} placeholder={placeholder} required />;
 };

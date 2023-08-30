@@ -13,7 +13,7 @@ import {
   getMinimalExchangeAmount,
 } from '~/redux/slices/thunks';
 
-import {CalculatorInput, ExchangeButton, SwapButton} from '~/ui';
+import {AddressInput, ExchangeButton, SwapButton} from '~/ui';
 
 import {StyledAddressContainer, StyledAdressSubmit, StyledExchangeContainer} from './styles';
 
@@ -163,7 +163,7 @@ export const ExchangeCurrencies = () => {
       <StyledAddressContainer>
         <p>Your Ethereum address</p>
         <StyledAdressSubmit>
-          <CalculatorInput />
+          <AddressInput />
           <ExchangeButton
             title="Exchange"
             type="submit"

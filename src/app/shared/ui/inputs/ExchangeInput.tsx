@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyledCalculatorInput} from './styles';
+import {StyledExchangeInput} from './styles';
 
 interface ExchangeInputProps {
   type?: 'email' | 'password' | 'text' | 'number';
@@ -22,7 +22,7 @@ export const ExchangeInput: React.FC<ExchangeInputProps> = ({
   placeholder,
 }) => {
   return (
-    <StyledCalculatorInput
+    <StyledExchangeInput
       type={type}
       placeholder={placeholder}
       value={value}

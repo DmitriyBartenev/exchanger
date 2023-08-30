@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import {colors} from '~/app/styles/colors';
 
-export const StyledCalculatorInput = styled.input`
+export const StyledExchangeInput = styled.input`
   width: 100%;
   height: 100%;
   background-color: ${colors.lightGray};
@@ -17,6 +17,6 @@ export const StyledCalculatorInput = styled.input`
   padding: 13px 0 13px 16px;
 `;
 
-export const StyledAddressInput = styled(StyledCalculatorInput)`
+export const StyledAddressInput = styled(StyledExchangeInput)`
   border: solid 1px ${colors.darkGray};
 `;
