@@ -9,6 +9,7 @@ export default function RootLayout(props: React.PropsWithChildren) {
     <Providers>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Crypto Exchange Calculator" />
       </Head>
       <html lang="en">
         <body>
