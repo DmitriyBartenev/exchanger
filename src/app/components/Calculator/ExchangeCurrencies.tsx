@@ -139,7 +139,14 @@ export const ExchangeCurrencies = () => {
           disabledButton={isLoading || toSelectorLoading}
         />
 
-        <SwapButton onClick={swapCurrency} disabled={isLoading || toSelectorLoading} />
+        <SwapButton
+          onClick={swapCurrency}
+          disabled={
+            isLoading ||
+            toSelectorLoading ||
+            selectedCurrency[0].ticker === selectedCurrency[1].ticker
+          }
+        />
 
         <CurrencySelector
           value={amount?.to}
