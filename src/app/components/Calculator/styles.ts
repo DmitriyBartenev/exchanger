@@ -61,7 +61,7 @@ export const StyledAddressContainer = styled.div`
   }
 `;
 
-export const StyledAdressSubmit = styled.div`
+export const StyledAddressSubmit = styled.div`
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -72,14 +72,14 @@ export const StyledAdressSubmit = styled.div`
   }
 `;
 
-export const StyledContainer = styled.div`
+export const StyledExchangeItemBox = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
   background-color: ${colors.lightGray};
 `;
 
-export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isError: boolean}>`
+export const StyledExchangeItem = styled.div<{$showDropdown: boolean; $isError: boolean}>`
   width: 100%;
   height: 50px;
   display: flex;
@@ -89,7 +89,7 @@ export const StyledCurrencySelector = styled.div<{$showDropdown: boolean; $isErr
   border-radius: ${({$showDropdown}) => ($showDropdown ? '5px 5px 0 0' : '5px')};
 `;
 
-export const StyledCurrencyDropdown = styled.ul`
+export const StyledDropdown = styled.ul`
   width: 100%;
   max-height: 300%;
   position: absolute;
