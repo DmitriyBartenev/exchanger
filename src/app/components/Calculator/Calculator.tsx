@@ -1,21 +1,15 @@
 import React from 'react';
 
-import {StyledCalculator, StyledCalculatorForm} from './styles';
+import {StyledCalculator} from './styles';
 
-import {ExchangeCurrencies} from './ExchangeCurrencies';
+import {CalculatorForm} from './CalculatorForm';
 
 export const Calculator: React.FC = () => {
-  const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <StyledCalculator>
       <h1>Crypto Exchange</h1>
       <p>Exchange fast and easy</p>
-      <StyledCalculatorForm>
-        <ExchangeCurrencies />
-      </StyledCalculatorForm>
+      <CalculatorForm />
     </StyledCalculator>
   );
 };
