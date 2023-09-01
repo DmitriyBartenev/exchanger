@@ -32,6 +32,7 @@ export const CalculatorForm = () => {
   });
   const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>(initialCurrency);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
+  const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -79,6 +80,7 @@ export const CalculatorForm = () => {
   // Get Minimal Exchange Amount
   useEffect(() => {
     if (selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
+      setCalcLoading(true);
       dispatch(
         getMinimalExchangeAmount({
           from: selectedCurrency[0]?.ticker,
@@ -118,6 +120,7 @@ export const CalculatorForm = () => {
         ...prev,
         to: String(estimatedExchangeAmount.estimatedAmount),
       }));
+      setCalcLoading(false);
     }
     if (estimatedExchangeAmount.error) {
       setAmount((prev) => ({
@@ -125,7 +128,6 @@ export const CalculatorForm = () => {
         to: '-',
       }));
     }
-
     setToSelectorLoading(false);
   }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
 
@@ -165,10 +167,7 @@ export const CalculatorForm = () => {
           disabledButton={isLoading || toSelectorLoading}
         />
       </StyledExchangeContainer>
-      <ExchangeAddress
-        disabled={isError || isLoading || toSelectorLoading}
-        title="Your Ethereum address"
-      />
+      <ExchangeAddress disabled={isError || isCalcLoading} title="Your Ethereum address" />
     </StyledCalculatorForm>
   );
 };
