@@ -148,11 +148,7 @@ export const CalculatorForm = () => {
 
         <SwapButton
           onClick={swapCurrency}
-          disabled={
-            isLoading ||
-            toSelectorLoading ||
-            selectedCurrency[0].ticker === selectedCurrency[1].ticker
-          }
+          disabled={isCalcLoading || selectedCurrency[0].ticker === selectedCurrency[1].ticker}
         />
 
         <ExchangeItem
