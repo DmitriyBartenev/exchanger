@@ -143,7 +143,7 @@ export const CalculatorForm = () => {
           index={selectedCurrency.indexOf(selectedCurrency[0])}
           isLoadingInput={minimalExchangeAmount.status === 'loading'}
           disabledInput={!!minimalExchangeAmount.error}
-          disabledButton={isLoading || toSelectorLoading}
+          disabledButton={isLoading || isCalcLoading || toSelectorLoading}
         />
 
         <SwapButton
