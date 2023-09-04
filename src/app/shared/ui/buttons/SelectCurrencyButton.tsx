@@ -25,22 +25,19 @@ export const SelectCurrencyButton: React.FC<SelectCurrencyButtonProps> = ({
   isLoading,
   disabled,
   onClick,
-}) => (
-  <StyledSelectCurrencyButton
-    onClick={onClick}
-    disabled={disabled}
-    type={type}
-    ref={buttonRef}
-    $showDropdown={showDropdown}
-  >
-    {isLoading ? (
-      <FetchCurrenciesSpinner />
-    ) : (
-      <>
-        {image && <Image src={image} alt={ticker} width={20} height={20} />}
-        {ticker}
-        <ArrowIcon />
-      </>
-    )}
-  </StyledSelectCurrencyButton>
-);
+}) =>
+  isLoading ? (
+    <FetchCurrenciesSpinner />
+  ) : (
+    <StyledSelectCurrencyButton
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      ref={buttonRef}
+      $showDropdown={showDropdown}
+    >
+      {image && <Image src={image} alt={ticker} width={20} height={20} />}
+      {ticker}
+      <ArrowIcon />
+    </StyledSelectCurrencyButton>
+  );
