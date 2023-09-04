@@ -121,6 +121,7 @@ export const CalculatorForm = () => {
         to: String(estimatedExchangeAmount.estimatedAmount),
       }));
       setCalcLoading(false);
+      setToSelectorLoading(false);
     }
     if (estimatedExchangeAmount.error) {
       setAmount((prev) => ({
@@ -128,7 +129,6 @@ export const CalculatorForm = () => {
         to: '-',
       }));
     }
-    setToSelectorLoading(false);
   }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
 
   return (
@@ -143,12 +143,16 @@ export const CalculatorForm = () => {
           index={selectedCurrency.indexOf(selectedCurrency[0])}
           isLoadingInput={minimalExchangeAmount.status === 'loading'}
           disabledInput={!!minimalExchangeAmount.error}
-          disabledButton={isLoading || isCalcLoading || toSelectorLoading}
+          disabledButton={isCalcLoading || toSelectorLoading}
         />
 
         <SwapButton
           onClick={swapCurrency}
-          disabled={isCalcLoading || selectedCurrency[0].ticker === selectedCurrency[1].ticker}
+          disabled={
+            isCalcLoading ||
+            toSelectorLoading ||
+            selectedCurrency[0].ticker === selectedCurrency[1].ticker
+          }
         />
 
         <ExchangeItem
@@ -158,9 +162,9 @@ export const CalculatorForm = () => {
           handleCurrencyChange={handleCurrencyChange}
           name="to"
           index={selectedCurrency.indexOf(selectedCurrency[1])}
-          isLoadingInput={toSelectorLoading || minimalExchangeAmount.status === 'loading'}
+          isLoadingInput={isCalcLoading || toSelectorLoading}
           disabledInput={true}
-          disabledButton={isLoading || toSelectorLoading}
+          disabledButton={isCalcLoading || toSelectorLoading}
         />
       </StyledExchangeContainer>
       <ExchangeAddress disabled={isError || isCalcLoading} title="Your Ethereum address" />
