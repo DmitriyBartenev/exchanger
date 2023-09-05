@@ -65,20 +65,27 @@ export const StyledSelectCurrencyButton = styled.button<{$showDropdown: boolean}
   svg {
     transition: transform 0.2s ease-in-out;
     transform: ${({$showDropdown}) => ($showDropdown ? 'rotate(180deg)' : 'none')};
+    path {
+      stroke: ${({$showDropdown}) => ($showDropdown ? colors.darkBlue : colors.blue)};
+    }
   }
   &:hover {
     svg {
       path {
-        stroke: ${colors.blue};
+        stroke: ${colors.darkBlue};
       }
     }
   }
   &:disabled {
     cursor: default;
+    color: ${colors.paleBlue};
     svg {
       path {
         stroke: ${colors.paleBlue};
       }
+    }
+    img {
+      filter: grayscale(1);
     }
   }
 `;
