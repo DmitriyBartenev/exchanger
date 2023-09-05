@@ -7,9 +7,9 @@ import {colors} from '~/app/styles/colors';
 export const StyledExchangeInput = styled.input`
   width: 100%;
   height: 100%;
-  background-color: ${colors.lightGray};
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
+  border-radius: 5px 0 0 5px;
   color: ${colors.black};
   font-size: 16px;
   font-weight: 400;
@@ -19,4 +19,6 @@ export const StyledExchangeInput = styled.input`
 
 export const StyledAddressInput = styled(StyledExchangeInput)`
   border: solid 1px ${colors.darkGray};
+  background-color: ${colors.lightGray};
+  border-radius: 5px;
 `;
