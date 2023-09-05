@@ -76,7 +76,6 @@ export const StyledExchangeItemBox = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: ${colors.lightGray};
 `;
 
 export const StyledExchangeItem = styled.div<{$showDropdown: boolean; $isError: boolean}>`
@@ -85,6 +84,7 @@ export const StyledExchangeItem = styled.div<{$showDropdown: boolean; $isError: 
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${colors.lightGray};
   border: solid 1px ${({$isError}) => ($isError ? colors.red : colors.darkGray)};
   border-radius: ${({$showDropdown}) => ($showDropdown ? '5px 5px 0 0' : '5px')};
 `;
