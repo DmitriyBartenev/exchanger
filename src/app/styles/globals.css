@@ -3,7 +3,7 @@ html,
 body {
   margin: 0 auto;
   max-width: 960px;
-  min-height: 100vh;
+  height: 100%;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   color: #282828;
