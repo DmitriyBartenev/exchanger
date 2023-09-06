@@ -20,17 +20,12 @@ import {StyledCalculatorForm, StyledExchangeContainer} from './styles';
 import {ExchangeAddress} from './ExchangeAddress';
 import {ExchangeItem} from './ExchangeItem';
 
-const initialCurrency = [
-  {ticker: 'btc', image: 'https://content-api.changenow.io/uploads/btc_1_527dc9ec3c.svg'},
-  {ticker: 'eth', image: 'https://content-api.changenow.io/uploads/eth_f4ebb54ec0.svg'},
-];
-
 export const CalculatorForm = () => {
   const [amount, setAmount] = useState<IAmountToChange>({
     from: '',
     to: '',
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>(initialCurrency);
+  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([]);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
   const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
 
@@ -69,17 +64,46 @@ export const CalculatorForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const {estimatedExchangeAmount, minimalExchangeAmount, isLoading, isError} =
+  const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount, isError} =
     useAppSelector(rootSelector);
 
   // Get Available Currencies
   useEffect(() => {
+    setCalcLoading(true);
     dispatch(getAvailableCurrencies());
-  }, [dispatch]);
+  }, []);
+
+  // Set Available Currencies
+  useEffect(() => {
+    const {availableCurrencies: currencies, error} = availableCurrencies;
+    if (currencies) {
+      setSelectedCurrency([
+        {
+          ticker: currencies[0]?.ticker,
+          image: currencies[0]?.image,
+        },
+        {
+          ticker: currencies[1]?.ticker,
+          image: currencies[1]?.image,
+        },
+      ]);
+    }
+    if (error) {
+      setCalcLoading(false);
+      setSelectedCurrency([
+        {ticker: '-', image: ''},
+        {ticker: '-', image: ''},
+      ]);
+    }
+  }, [availableCurrencies.availableCurrencies, availableCurrencies.error]);
 
   // Get Minimal Exchange Amount
   useEffect(() => {
-    if (selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker) {
+    const isFieldsNotEmpty = selectedCurrency[0]?.ticker && selectedCurrency[1]?.ticker;
+    const isFieldsValid =
+      selectedCurrency[0]?.ticker !== '-' && selectedCurrency[1]?.ticker !== '-';
+
+    if (isFieldsNotEmpty && isFieldsValid) {
       setCalcLoading(true);
       dispatch(
         getMinimalExchangeAmount({
@@ -92,17 +116,28 @@ export const CalculatorForm = () => {
 
   // Set Minimal Exchange Amount
   useEffect(() => {
-    if (minimalExchangeAmount.minAmount) {
+    const {minAmount, error} = minimalExchangeAmount;
+
+    if (minAmount) {
       setAmount((prev) => ({
         ...prev,
-        from: String(minimalExchangeAmount.minAmount),
+        from: String(minAmount),
       }));
     }
-  }, [minimalExchangeAmount.minAmount]);
+    if (error) {
+      setAmount((prev) => ({
+        from: '-',
+        to: '-',
+      }));
+      setCalcLoading(false);
+    }
+  }, [minimalExchangeAmount.minAmount, minimalExchangeAmount.error]);
 
   // Get Estimated Exchange Amount
   useEffect(() => {
-    if (amount.from) {
+    const isFieldValid = amount.from && amount.from !== '-';
+
+    if (isFieldValid) {
       setToSelectorLoading(true);
 
       debouncedGetEstimatedExchangeAmount.current(
@@ -115,19 +150,23 @@ export const CalculatorForm = () => {
 
   // Set Estimated Exchange Amount
   useEffect(() => {
-    if (amount.from && estimatedExchangeAmount.estimatedAmount) {
+    const {estimatedAmount, error} = estimatedExchangeAmount;
+
+    if (amount.from && estimatedAmount) {
       setAmount((prev) => ({
         ...prev,
-        to: String(estimatedExchangeAmount.estimatedAmount),
+        to: String(estimatedAmount),
       }));
       setCalcLoading(false);
       setToSelectorLoading(false);
     }
-    if (estimatedExchangeAmount.error) {
+    if (error) {
       setAmount((prev) => ({
         ...prev,
         to: '-',
       }));
+      setCalcLoading(false);
+      setToSelectorLoading(false);
     }
   }, [estimatedExchangeAmount.estimatedAmount, estimatedExchangeAmount.error]);
 
@@ -141,19 +180,12 @@ export const CalculatorForm = () => {
           handleCurrencyChange={handleCurrencyChange}
           name="from"
           index={selectedCurrency.indexOf(selectedCurrency[0])}
-          isLoadingInput={minimalExchangeAmount.status === 'loading'}
+          isLoadingInput={isCalcLoading}
           disabledInput={!!minimalExchangeAmount.error}
           disabledButton={isCalcLoading || toSelectorLoading}
         />
 
-        <SwapButton
-          onClick={swapCurrency}
-          disabled={
-            isCalcLoading ||
-            toSelectorLoading ||
-            selectedCurrency[0].ticker === selectedCurrency[1].ticker
-          }
-        />
+        <SwapButton onClick={swapCurrency} disabled={isCalcLoading || toSelectorLoading} />
 
         <ExchangeItem
           value={amount?.to}
@@ -167,7 +199,10 @@ export const CalculatorForm = () => {
           disabledButton={isCalcLoading || toSelectorLoading}
         />
       </StyledExchangeContainer>
-      <ExchangeAddress disabled={isError || isCalcLoading} title="Your Ethereum address" />
+      <ExchangeAddress
+        disabled={isError || isCalcLoading || toSelectorLoading}
+        title="Your Ethereum address"
+      />
     </StyledCalculatorForm>
   );
 };
