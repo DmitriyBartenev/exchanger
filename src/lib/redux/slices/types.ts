@@ -13,6 +13,7 @@ export interface AvailableCurrenciesResponse {
 
 export interface AvailableCurrenciesError {
   error: string;
+  message?: string;
 }
 
 // Minimal exchange amount
@@ -28,6 +29,7 @@ export interface MinimalExchangeAmountQueryParams {
 
 export interface MinimalExchangeAmountError {
   error: string;
+  message?: string;
 }
 
 // Estimated exchange amount
