@@ -31,7 +31,8 @@ export const getAvailableCurrencies = createAppAsyncThunk<
     }
   } catch (error) {
     return rejectWithValue({
-      error: 'unknown_error',
+      error: 'Failed to load currencies',
+      message: 'An unknown error occurred',
     });
   }
 });
@@ -57,7 +58,8 @@ export const getMinimalExchangeAmount = createAppAsyncThunk<
     }
   } catch (error) {
     return rejectWithValue({
-      error: 'unknown_error',
+      error: 'Failed to load minimal exchange amount',
+      message: 'An unknown error occurred',
     });
   }
 });
@@ -83,7 +85,7 @@ export const getEstimatedExchangeAmount = createAppAsyncThunk<
     }
   } catch (error) {
     return rejectWithValue({
-      error: 'unknown_error',
+      error: 'Failed to load estimated exchange amount',
       message: 'An unknown error occurred',
     });
   }
