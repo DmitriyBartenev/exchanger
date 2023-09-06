@@ -84,7 +84,7 @@ export const ExchangeItem: React.FC<ExchangeItemProps> = ({
         )}
         <SelectCurrencyButton
           image={selectedCurrency?.image}
-          ticker={selectedCurrency?.ticker.toUpperCase()}
+          ticker={selectedCurrency?.ticker?.toUpperCase()}
           onClick={toggleDropdown}
           buttonRef={buttonRef}
           showDropdown={showDropdown}
@@ -226,18 +226,19 @@ function Dropdown(props: {
 
 function ExchangeError(props: {index: number}) {
   const {index} = props;
-  const {estimatedExchangeAmount, minimalExchangeAmount} = useAppSelector(rootSelector);
+  const {minimalExchangeAmount, estimatedExchangeAmount, availableCurrencies} =
+    useAppSelector(rootSelector);
 
   const errorToRender =
-    minimalExchangeAmount.error?.error || estimatedExchangeAmount.error?.message;
+    minimalExchangeAmount.error?.error ||
+    availableCurrencies.error?.error ||
+    estimatedExchangeAmount.error?.error;
 
   const renderError = (errorMessage: string) => (
     <StyledExchangeError>{errorMessage}</StyledExchangeError>
   );
 
-  if (index === 1 && errorToRender) {
-    return renderError(errorToRender);
-  }
+  if (index === 1 && errorToRender) return renderError(errorToRender);
 
   return null;
 }
