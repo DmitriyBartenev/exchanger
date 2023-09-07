@@ -135,9 +135,9 @@ export const CalculatorForm = () => {
 
   // Get Estimated Exchange Amount
   useEffect(() => {
-    const isFieldValid = amount.from && amount.from !== '-';
+    const isValidNumber = amount.from && /^[0-9]+(\.[0-9]+)?$/.test(amount.from);
 
-    if (isFieldValid) {
+    if (isValidNumber) {
       setToSelectorLoading(true);
 
       debouncedGetEstimatedExchangeAmount.current(
