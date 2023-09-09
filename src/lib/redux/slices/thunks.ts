@@ -18,8 +18,6 @@ export const getAvailableCurrencies = createAppAsyncThunk<
   {rejectValue: AvailableCurrenciesError}
 >('availableCurrencies/fetchData', async (_, {rejectWithValue}) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const response = await fetch('https://api.changenow.io/v1/currencies?active=true');
 
     if (response.ok) {
