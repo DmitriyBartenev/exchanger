@@ -41,8 +41,6 @@ export const getMinimalExchangeAmount = createAppAsyncThunk<
   {rejectValue: MinimalExchangeAmountError}
 >('minimalExchangeAmount/fetchData', async ({from, to}, {rejectWithValue}) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const response = await fetch(
       `https://api.changenow.io/v1/min-amount/${from}_${to}?api_key=${api_key}`,
     );
