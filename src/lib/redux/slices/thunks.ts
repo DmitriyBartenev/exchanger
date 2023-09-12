@@ -66,8 +66,6 @@ export const getEstimatedExchangeAmount = createAppAsyncThunk<
   {rejectValue: EstimatedExchangeAmountError}
 >('estimatedExchangeAmount/fetchData', async ({send_amount, from, to}, {rejectWithValue}) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const response = await fetch(
       `https://api.changenow.io/v1/exchange-amount/${send_amount}/${from}_${to}/?api_key=${api_key}`,
     );
