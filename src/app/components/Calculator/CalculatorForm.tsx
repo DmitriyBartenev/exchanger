@@ -146,6 +146,13 @@ export const CalculatorForm = () => {
         amount.from,
       );
     }
+
+    if (!isValidNumber) {
+      setAmount((prev) => ({
+        ...prev,
+        to: '-',
+      }));
+    }
   }, [amount.from]);
 
   // Set Estimated Exchange Amount
