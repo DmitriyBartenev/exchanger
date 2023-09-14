@@ -135,9 +135,12 @@ export const CalculatorForm = () => {
 
   // Get Estimated Exchange Amount
   useEffect(() => {
+    const {error} = estimatedExchangeAmount;
+    const isExchangeAmountValid =
+      !error || Number(amount.from) >= Number(minimalExchangeAmount.minAmount);
     const isValidNumber = amount.from && /^[0-9]+(\.[0-9]+)?$/.test(amount.from);
 
-    if (isValidNumber) {
+    if (isValidNumber && isExchangeAmountValid) {
       setToSelectorLoading(true);
 
       debouncedGetEstimatedExchangeAmount.current(
@@ -207,7 +210,7 @@ export const CalculatorForm = () => {
         />
       </StyledExchangeContainer>
       <ExchangeAddress
-        disabled={isError || isCalcLoading || toSelectorLoading}
+        disabled={isError || isCalcLoading || toSelectorLoading || amount.to === '-'}
         title="Your Ethereum address"
       />
     </StyledCalculatorForm>
