@@ -13,15 +13,12 @@ const DefaultButton = styled.button`
   cursor: pointer;
 `;
 
-export const StyledButtonContainer = styled.div`
+export const StyledExchangeButton = styled.button`
+  height: 50px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-export const StyledExchangeButton = styled.button`
-  padding: 15px 59px;
+  padding: 12px 59px;
   background-color: ${colors.blue};
   color: ${colors.white};
   border-radius: 5px;
