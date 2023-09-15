@@ -62,7 +62,7 @@ export const StyledAddressContainer = styled.div`
 `;
 
 export const StyledAddressSubmit = styled.div`
-  height: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,6 +70,13 @@ export const StyledAddressSubmit = styled.div`
   @media screen and (max-width: 500px) {
     flex-direction: column;
   }
+`;
+
+export const StyledAddressInput = styled.div`
+  width: 100%;
+  border: solid 1px ${colors.darkGray};
+  background-color: ${colors.lightGray};
+  border-radius: 5px;
 `;
 
 export const StyledExchangeItemBox = styled.div`
