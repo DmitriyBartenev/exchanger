@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {StyledButtonContainer, StyledExchangeButton} from './styles';
+import {StyledExchangeButton} from './styles';
 
 interface ExchangeButtonProps {
   type?: 'button' | 'submit' | 'reset';
@@ -14,10 +14,8 @@ export const ExchangeButton: React.FC<ExchangeButtonProps> = ({
   disabled,
 }) => {
   return (
-    <StyledButtonContainer>
-      <StyledExchangeButton type={type} disabled={disabled}>
-        {title}
-      </StyledExchangeButton>
-    </StyledButtonContainer>
+    <StyledExchangeButton type={type} disabled={disabled}>
+      {title}
+    </StyledExchangeButton>
   );
 };
