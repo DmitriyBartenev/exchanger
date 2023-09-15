@@ -17,8 +17,4 @@ export const StyledExchangeInput = styled.input`
   padding: 13px 0 13px 16px;
 `;
 
-export const StyledAddressInput = styled(StyledExchangeInput)`
-  border: solid 1px ${colors.darkGray};
-  background-color: ${colors.lightGray};
-  border-radius: 5px;
-`;
+export const StyledAddressInput = styled(StyledExchangeInput)``;
