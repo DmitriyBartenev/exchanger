@@ -6,10 +6,6 @@ const selectRoot = (state: RootState) => state;
 
 export const rootSelector = createSelector([selectRoot], (rootState) => {
   const {availableCurrencies, estimatedExchangeAmount, minimalExchangeAmount} = rootState;
-  const isLoading =
-    availableCurrencies.status === 'loading' ||
-    minimalExchangeAmount.status === 'loading' ||
-    estimatedExchangeAmount.status === 'loading';
 
   const isError =
     availableCurrencies.status === 'failed' ||
@@ -20,7 +16,6 @@ export const rootSelector = createSelector([selectRoot], (rootState) => {
     availableCurrencies,
     minimalExchangeAmount,
     estimatedExchangeAmount,
-    isLoading,
     isError,
   };
 });
