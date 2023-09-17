@@ -1,24 +1,25 @@
 # Crypto Exchanger
 
-This repository contains a crypto exchanger application built using TypeScript, React.js, Redux, Redux-Toolkit, Next.js, StyledComponents, and Reselect. The application allows users to select a cryptocurrency and exchange it for another cryptocurrency, with the initial value calculated based on the selected exchange rate.
+This repository contains a crypto exchanger application built using TypeScript, React.js, Redux-Toolkit, Next.js, StyledComponents. The application allows users to select a cryptocurrency and exchange it for another cryptocurrency, with the initial value calculated based on the selected exchange rate.
 
-## Features
+## How to use
 
-- Select from a wide range of cryptocurrencies supported by the API
-- Choose the amount of cryptocurrency to exchange
-- View the calculated initial value before proceeding with the exchange
-- Responsive design for a seamless user experience on all devices
+- Choose the cryptocurrency pair you want to exchange (e.g., BTC to ETH)
+- Enter the amount of the first cryptocurrency (e.g., BTC) you want to exchange
+- Utilize the search functionality to find specific cryptocurrencies quickly. Just enter the cryptocurrency name you're looking for
+- The API will calculate the initial value in the second cryptocurrency (e.g., ETH) based on the current market rate. Review this value before proceeding with the exchange
+- Access the API on any device with an internet connection. The interface will automatically adjust to provide the best user experience
 
 ## Installation
 
 Before running the application, make sure you have Node.js and npm installed on your system.
 
 1. Clone the repository:
-  `git clone https://github.com/DmitriyBartenev/exchanger.git`
+   `git clone https://github.com/DmitriyBartenev/exchanger.git`
 2. Install the dependencies:
-  `npm install`
+   `npm install`
 3. Run the development server:
-  `npm run dev`
+   `npm run dev`
 
 ## Contributing
 
