@@ -2,8 +2,9 @@
 
 import debounce from 'lodash.debounce';
 import React, {useEffect, useRef, useState} from 'react';
+import toast, {Toaster} from 'react-hot-toast';
 
-import {IAmountToChange, ICurrency} from '~/app/types';
+import type {IAmountToChange, ICurrency} from '~/app/types';
 
 import {useAppDispatch, useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
@@ -60,6 +61,10 @@ export const CalculatorForm = () => {
 
   const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    toast.success('Successfully exchanged', {
+      position: 'bottom-left',
+      icon: '👏',
+    });
   };
 
   const dispatch = useAppDispatch();
@@ -213,6 +218,7 @@ export const CalculatorForm = () => {
         disabled={isError || isCalcLoading || toSelectorLoading || amount.to === '-'}
         title="Your Ethereum address"
       />
+      <Toaster />
     </StyledCalculatorForm>
   );
 };
