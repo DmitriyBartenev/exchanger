@@ -26,9 +26,14 @@ export const CalculatorForm = () => {
     from: '',
     to: '',
   });
+  const [ethereumAddressValue, setEthereumAddressValue] = useState<string>('');
   const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([]);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
   const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
+
+  const handleEthereumAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEthereumAddressValue(event.target.value);
+  };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -59,8 +64,11 @@ export const CalculatorForm = () => {
     ]);
   };
 
-  const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setCalcLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setCalcLoading(false);
     toast.success('Successfully exchanged', {
       position: 'bottom-left',
       icon: '👏',
@@ -215,8 +223,12 @@ export const CalculatorForm = () => {
         />
       </StyledExchangeContainer>
       <ExchangeAddress
-        disabled={isError || isCalcLoading || toSelectorLoading || amount.to === '-'}
-        title="Your Ethereum address"
+        disabledButton={isError || isCalcLoading || toSelectorLoading || amount.to === '-'}
+        disabledInput={isCalcLoading || toSelectorLoading}
+        label="Your Ethereum address"
+        value={ethereumAddressValue}
+        onChange={handleEthereumAddressChange}
+        name="ethereum-address"
       />
       <Toaster />
     </StyledCalculatorForm>
