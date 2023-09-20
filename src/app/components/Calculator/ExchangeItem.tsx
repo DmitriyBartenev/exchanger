@@ -70,18 +70,16 @@ export const ExchangeItem: React.FC<ExchangeItemProps> = ({
   return (
     <StyledExchangeItemBox>
       <StyledExchangeItem $showDropdown={showDropdown} $isError={isError}>
-        {isLoadingInput && !showDropdown ? (
-          <ExchangeAmountSpinner />
-        ) : (
-          <ExchangeInput
-            placeholder={showDropdown ? 'Search' : ''}
-            value={showDropdown ? searchValue : value ?? ''}
-            onChange={showDropdown ? onSearchCurrencies : onChange}
-            disabled={showDropdown ? false : disabledInput}
-            name={name}
-            inputRef={inputRef}
-          />
-        )}
+        <ExchangeInput
+          value={showDropdown ? searchValue : value ?? ''}
+          onChange={showDropdown ? onSearchCurrencies : onChange}
+          placeholder={showDropdown ? 'Search' : ''}
+          name={name}
+          disabled={showDropdown ? false : disabledInput}
+          inputRef={inputRef}
+          isLoading={isLoadingInput && !showDropdown}
+        />
+
         <SelectCurrencyButton
           image={selectedCurrency?.image}
           ticker={selectedCurrency?.ticker?.toUpperCase()}
