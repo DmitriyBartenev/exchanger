@@ -51,28 +51,19 @@ export const StyledExchangeContainer = styled.div`
   }
 `;
 
-export const StyledAddressContainer = styled.div`
+export const StyledExchangeAddress = styled.div`
   width: 100%;
-  height: 100%;
-  p {
-    font-size: 16px;
-    line-height: 23px;
-    margin: 0 0 8px;
-  }
-`;
-
-export const StyledAddressSubmit = styled.div`
-  height: 50px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 32px;
   @media screen and (max-width: 500px) {
     flex-direction: column;
+    align-items: center;
   }
 `;
 
-export const StyledAddressInput = styled.div`
+export const StyledInputContainer = styled.div`
   width: 100%;
   border: solid 1px ${colors.darkGray};
   background-color: ${colors.lightGray};
