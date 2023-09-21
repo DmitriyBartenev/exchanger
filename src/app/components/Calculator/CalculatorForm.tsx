@@ -31,6 +31,8 @@ export const CalculatorForm = () => {
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
   const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
 
+  const combinedCalcLoading = toSelectorLoading || isCalcLoading;
+
   const handleEthereumAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEthereumAddressValue(event.target.value);
   };
@@ -69,9 +71,10 @@ export const CalculatorForm = () => {
     setCalcLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setCalcLoading(false);
-    toast.success('Successfully exchanged', {
+    toast.success('Successfully Exchanged', {
       position: 'bottom-left',
       icon: '👏',
+      duration: 2000,
     });
   };
 
@@ -205,10 +208,10 @@ export const CalculatorForm = () => {
           index={selectedCurrency.indexOf(selectedCurrency[0])}
           isLoadingInput={isCalcLoading}
           disabledInput={!!minimalExchangeAmount.error}
-          disabledButton={isCalcLoading || toSelectorLoading}
+          disabledButton={combinedCalcLoading}
         />
 
-        <SwapButton onClick={swapCurrency} disabled={isCalcLoading || toSelectorLoading} />
+        <SwapButton onClick={swapCurrency} disabled={combinedCalcLoading} />
 
         <ExchangeItem
           value={amount?.to}
@@ -217,14 +220,14 @@ export const CalculatorForm = () => {
           handleCurrencyChange={handleCurrencyChange}
           name="to"
           index={selectedCurrency.indexOf(selectedCurrency[1])}
-          isLoadingInput={isCalcLoading || toSelectorLoading}
+          isLoadingInput={combinedCalcLoading}
           disabledInput={true}
-          disabledButton={isCalcLoading || toSelectorLoading}
+          disabledButton={combinedCalcLoading}
         />
       </StyledExchangeContainer>
       <ExchangeAddress
-        disabledButton={isError || isCalcLoading || toSelectorLoading || amount.to === '-'}
-        disabledInput={isCalcLoading || toSelectorLoading}
+        disabledButton={isError || combinedCalcLoading || amount.to === '-'}
+        disabledInput={combinedCalcLoading}
         label="Your Ethereum address"
         value={ethereumAddressValue}
         onChange={handleEthereumAddressChange}
