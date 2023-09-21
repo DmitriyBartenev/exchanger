@@ -13,6 +13,7 @@ export const StyledContainer = styled.div`
   label {
     font-size: 16px;
     line-height: 23px;
+    width: fit-content;
   }
 `;
 
