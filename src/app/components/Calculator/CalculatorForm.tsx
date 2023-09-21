@@ -71,6 +71,7 @@ export const CalculatorForm = () => {
     setCalcLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setCalcLoading(false);
+    setEthereumAddressValue('');
     toast.success('Successfully Exchanged', {
       position: 'bottom-left',
       icon: '👏',
