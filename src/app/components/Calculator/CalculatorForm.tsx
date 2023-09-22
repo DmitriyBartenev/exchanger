@@ -72,11 +72,15 @@ export const CalculatorForm = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setCalcLoading(false);
     setEthereumAddressValue('');
-    toast.success('Successfully Exchanged', {
-      position: 'bottom-left',
-      icon: '👏',
-      duration: 2000,
-    });
+
+    toast.success(
+      `Successfully Exchanged ${amount.from} ${selectedCurrency[0].ticker} to ${amount.to} ${selectedCurrency[1].ticker}`,
+      {
+        position: 'bottom-left',
+        icon: '👏',
+        duration: 2000,
+      },
+    );
   };
 
   const dispatch = useAppDispatch();
