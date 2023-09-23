@@ -73,8 +73,22 @@ export const CalculatorForm = () => {
     setCalcLoading(false);
     setEthereumAddressValue('');
 
+    function sliceAmount(amount: string): string {
+      if (amount.includes('.') && amount.length > 6) {
+        const amountArr = amount.split('.');
+        return amountArr[0] + '.' + amountArr[1].slice(0, 4) + '...';
+      } else if (!amount.includes('.') && amount.length > 4) {
+        return amount.slice(0, 4) + '...';
+      }
+      return amount;
+    }
+
     toast.success(
-      `Successfully Exchanged ${amount.from} ${selectedCurrency[0].ticker} to ${amount.to} ${selectedCurrency[1].ticker}`,
+      `Successfully exchanged ${sliceAmount(
+        amount.from,
+      )} ${selectedCurrency[0].ticker.toUpperCase()} to ${sliceAmount(
+        amount.to,
+      )} ${selectedCurrency[1].ticker.toUpperCase()}`,
       {
         position: 'bottom-left',
         icon: '👏',
