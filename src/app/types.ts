@@ -4,6 +4,6 @@ export interface ICurrency {
 }
 
 export interface IAmountToChange {
-  from: string | undefined;
-  to: string | undefined;
+  from: string;
+  to: string;
 }
