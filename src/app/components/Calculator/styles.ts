@@ -63,13 +63,6 @@ export const StyledExchangeAddress = styled.div`
   }
 `;
 
-export const StyledInputContainer = styled.div`
-  width: 100%;
-  border: solid 1px ${colors.darkGray};
-  background-color: ${colors.lightGray};
-  border-radius: 5px;
-`;
-
 export const StyledExchangeItemBox = styled.div`
   position: relative;
   width: 100%;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {AddressInput, ExchangeButton} from '~/ui';
 
-import {StyledExchangeAddress, StyledInputContainer} from './styles';
+import {StyledExchangeAddress} from './styles';
 
 interface ExchangeAddressProps {
   disabledButton: boolean;
