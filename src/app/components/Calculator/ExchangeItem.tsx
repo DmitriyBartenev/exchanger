@@ -6,7 +6,7 @@ import {useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
 import {AvailableCurrenciesResponse} from '~/redux/slices/types';
 
-import {ExchangeAmountSpinner, ExchangeInput, SelectCurrencyButton} from '~/ui';
+import {ExchangeInput, SelectCurrencyButton} from '~/ui';
 
 import {
   DropdownCSSTransition,
