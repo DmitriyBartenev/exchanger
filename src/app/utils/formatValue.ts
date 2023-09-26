@@ -5,8 +5,8 @@ export const formatValue = (value: string): string => {
 
   if (value.includes('.')) {
     const [beforeDot, afterDot] = value.split('.');
-    return `${beforeDot}.${afterDot.slice(0, 4)}...`;
+    return afterDot.length > 4 ? `${beforeDot}.${afterDot.slice(0, 4)}...` : value;
   }
 
-  return value.slice(0, 4) + '...';
+  return `${value.slice(0, 4)}...`;
 };
