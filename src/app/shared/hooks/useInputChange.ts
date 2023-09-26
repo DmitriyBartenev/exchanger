@@ -1,6 +1,6 @@
 import {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
 
-export const useValueChange = <T>(
+export const useInputChange = <T>(
   initValue: T,
 ): [T, Dispatch<SetStateAction<T>>, (event: ChangeEvent<HTMLInputElement>) => void] => {
   const [value, setValue] = useState<T>(initValue);
