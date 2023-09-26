@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import React, {useEffect, useRef, useState} from 'react';
 import toast, {Toaster} from 'react-hot-toast';
 
-import {useValueChange} from '~/app/shared/hooks/useValueChange';
+import {useInputChange} from '~/app/shared/hooks/useInputChange';
 import type {IAmountToChange, ICurrency} from '~/app/types';
 import {formatValue} from '~/app/utils/formatValue';
 
@@ -24,11 +24,11 @@ import {ExchangeAddress} from './ExchangeAddress';
 import {ExchangeItem} from './ExchangeItem';
 
 export const CalculatorForm = () => {
-  const [amount, setAmount, handleAmountChange] = useValueChange<IAmountToChange>({
+  const [amount, setAmount, handleAmountChange] = useInputChange<IAmountToChange>({
     from: '',
     to: '',
   });
-  const [ethereumValue, setEthereumValue, handleEthereumValue] = useValueChange<string>('');
+  const [ethereumValue, setEthereumValue, handleEthereumValue] = useInputChange<string>('');
   const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([]);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
   const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
