@@ -4,7 +4,9 @@ import debounce from 'lodash.debounce';
 import React, {useEffect, useRef, useState} from 'react';
 import toast, {Toaster} from 'react-hot-toast';
 
+import {useValueChange} from '~/app/shared/hooks/useValueChange';
 import type {IAmountToChange, ICurrency} from '~/app/types';
+import {formatValue} from '~/app/utils/formatValue';
 
 import {useAppDispatch, useAppSelector} from '~/redux/hooks';
 import {rootSelector} from '~/redux/slices/selectors';
@@ -22,28 +24,16 @@ import {ExchangeAddress} from './ExchangeAddress';
 import {ExchangeItem} from './ExchangeItem';
 
 export const CalculatorForm = () => {
-  const [amount, setAmount] = useState<IAmountToChange>({
+  const [amount, setAmount, handleAmountChange] = useValueChange<IAmountToChange>({
     from: '',
     to: '',
   });
-  const [ethereumAddressValue, setEthereumAddressValue] = useState<string>('');
+  const [ethereumValue, setEthereumValue, handleEthereumValue] = useValueChange<string>('');
   const [selectedCurrency, setSelectedCurrency] = useState<ICurrency[]>([]);
   const [toSelectorLoading, setToSelectorLoading] = useState<boolean>(false);
   const [isCalcLoading, setCalcLoading] = useState<boolean>(false);
 
   const combinedCalcLoading = toSelectorLoading || isCalcLoading;
-
-  const handleEthereumAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEthereumAddressValue(event.target.value);
-  };
-
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
-    setAmount((prevAmount) => ({
-      ...prevAmount,
-      [name]: value,
-    }));
-  };
 
   const debouncedGetEstimatedExchangeAmount = useRef(
     debounce((from, to, sendAmount) => {
@@ -71,22 +61,12 @@ export const CalculatorForm = () => {
     setCalcLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setCalcLoading(false);
-    setEthereumAddressValue('');
-
-    function sliceAmount(amount: string): string {
-      if (amount.includes('.') && amount.length > 6) {
-        const amountArr = amount.split('.');
-        return amountArr[0] + '.' + amountArr[1].slice(0, 4) + '...';
-      } else if (!amount.includes('.') && amount.length > 4) {
-        return amount.slice(0, 4) + '...';
-      }
-      return amount;
-    }
+    setEthereumValue('');
 
     toast.success(
-      `Successfully exchanged ${sliceAmount(
+      `Successfully exchanged ${formatValue(
         amount.from,
-      )} ${selectedCurrency[0].ticker.toUpperCase()} to ${sliceAmount(
+      )} ${selectedCurrency[0].ticker.toUpperCase()} to ${formatValue(
         amount.to,
       )} ${selectedCurrency[1].ticker.toUpperCase()}`,
       {
@@ -248,8 +228,8 @@ export const CalculatorForm = () => {
         disabledButton={isError || combinedCalcLoading || amount.to === '-'}
         disabledInput={combinedCalcLoading}
         label="Your Ethereum address"
-        value={ethereumAddressValue}
-        onChange={handleEthereumAddressChange}
+        value={ethereumValue}
+        onChange={handleEthereumValue}
         name="ethereum-address"
       />
       <Toaster />
