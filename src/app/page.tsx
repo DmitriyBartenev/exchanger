@@ -1,6 +1,6 @@
 import {Metadata} from 'next';
 
-import {Calculator} from './components/Calculator/Calculator';
+import {Calculator} from '~/components/Calculator';
 
 export const metadata: Metadata = {
   title: 'Crypto Exchange',
@@ -26,6 +26,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function IndexPage() {
+export default async function IndexPage() {
   return <Calculator />;
 }
