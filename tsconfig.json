@@ -34,9 +34,6 @@
       ],
       "~/redux/*": [
         "src/lib/redux/*"
-      ],
-      "~/ui": [
-        "src/app/shared/ui/index.ts"
       ]
     }
   },
