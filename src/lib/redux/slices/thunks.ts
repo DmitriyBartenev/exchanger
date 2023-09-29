@@ -10,7 +10,7 @@ import type {
   MinimalExchangeAmountResponse,
 } from './types';
 
-const api_key = 'c9155859d90d239f909d2906233816b26cd8cf5ede44702d422667672b58b0cd';
+const api_key = process.env.NEXT_PUBLIC_API_KEY;
 
 export const getAvailableCurrencies = createAppAsyncThunk<
   AvailableCurrenciesResponse[],
