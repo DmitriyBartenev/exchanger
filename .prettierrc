@@ -16,7 +16,7 @@
     "^~/redux/",
     "^./utils/",
     "^./layouts/",
-    "^~/components/",
+    "^~/components",
     "^~/types/",
     "^~/shared/",
     "^./styles",
