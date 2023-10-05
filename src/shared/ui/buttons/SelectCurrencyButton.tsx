@@ -11,7 +11,7 @@ interface SelectCurrencyButtonProps {
   image: string;
   buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
   showDropdown: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   disabled: boolean;
   onClick: () => void;
 }
