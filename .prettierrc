@@ -16,9 +16,9 @@
     "^./utils/",
     "^./layouts/",
     "^~/components",
-    "^~/types/",
     "^~/shared/",
     "^./styles",
+    "^~/types/",
     "^[./*]"
   ],
   "importOrderSeparation": true,
