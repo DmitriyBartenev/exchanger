@@ -11,8 +11,7 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "<THIRD_PARTY_MODULES>",
-    "^~/app/",
-    "^~/lib/",
+    "^~/pages/",
     "^~/redux/",
     "^./utils/",
     "^./layouts/",
