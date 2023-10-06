@@ -31,9 +31,6 @@
     "paths": {
       "~/*": [
         "src/*"
-      ],
-      "~/redux/*": [
-        "src/lib/redux/*"
       ]
     }
   },
