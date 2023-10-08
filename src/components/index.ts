@@ -1,1 +1,1 @@
-export {Calculator} from './Calculator';
+export {ExchangeForm} from './ExchangeForm/ExchangeForm';
