@@ -1,11 +1,9 @@
 import {type Action, configureStore, type ThunkAction} from '@reduxjs/toolkit';
 
-import {exchangeApi} from './features/api/exchangeApi';
 import {rootReducer} from './rootReducer';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(exchangeApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
